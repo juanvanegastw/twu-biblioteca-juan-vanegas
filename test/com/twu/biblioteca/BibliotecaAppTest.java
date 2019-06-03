@@ -19,7 +19,7 @@ public class BibliotecaAppTest {
         System.setOut(new PrintStream(arrayStream));
 
         //Executing
-        myApp.main(null);
+        myApp.showWelcomeMessage();
 
         //Verifying
         Assert.assertTrue(arrayStream.toString().length() > 0);
@@ -35,7 +35,7 @@ public class BibliotecaAppTest {
         System.setOut(new PrintStream(arrayStream));
 
         //Executing
-        myApp.main(null);
+        myApp.showWelcomeMessage();
 
         //Verifying
         assertThat(arrayStream.toString(), is(BibliotecaApp.welcomeMessage));
