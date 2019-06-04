@@ -43,4 +43,24 @@ public class BibliotecaAppTest {
         //Cleaning
         System.setOut(System.out);
     }
+
+    @Test
+    public void shouldListAllBooksInTheALibrary(){
+        //Setting
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        BibliotecaApp myApp = new BibliotecaApp();
+        Book firstBook = new Book("First Book");
+        myApp.biblioteca.addBook(firstBook);
+
+        //Executing
+        myApp.listBooks();
+
+        //Verifying
+        assertThat(byteArrayOutputStream.toString(), is("First Book\n"));
+
+        // Cleaning
+        System.setOut(System.out);
+
+    }
 }

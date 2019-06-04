@@ -18,6 +18,90 @@ public class LibraryTest {
 
     }
 
+    @Test
+    public void shouldAllowToAddABook(){
+        // Arrange
+        Book firstBook = new Book("First Book");
+        Library myLibrary = new Library("My Library");
+
+        // Act
+        boolean bookAdded = myLibrary.addBook(firstBook);
+
+        // Assert
+        assertThat(bookAdded, is(true));
+    }
+
+
+    @Test
+    public void shouldReturnTheBooksQuantity(){
+        // Arrange
+        Library myLibrary = new Library("My Library");
+
+        // Act
+        Integer booksQuantity = myLibrary.getBooksQuantity();
+
+        // Assert
+        assertThat(booksQuantity, is(0));
+
+    }
+
+    @Test
+    public void shouldIncreaseBooksQuantityWhenAddingABook(){
+        // Arrange
+        Library myLibrary = new Library("My Library");
+        Book firstBook = new Book("First Book");
+        myLibrary.addBook(firstBook);
+
+        // Act
+        Integer booksQuantity = myLibrary.getBooksQuantity();
+
+        // Assert
+        assertThat(booksQuantity, is(1));
+    }
+
+    @Test
+    public void shouldIncreaseBooksQuantityWhenAddingTwoBooks(){
+        // Arrange
+        Library myLibrary = new Library("My Library");
+        Book firstBook = new Book("First Book");
+        Book secondBook = new Book("Second Book");
+        myLibrary.addBook(firstBook);
+        myLibrary.addBook(secondBook);
+
+        // Act
+        Integer booksQuantity = myLibrary.getBooksQuantity();
+
+        // Assert
+        assertThat(booksQuantity, is(2));
+    }
+
+    @Test
+    public void shouldReturnAStringListWhenBookAdded(){
+        // Arrange
+        Library myLibrary = new Library("My Library");
+        Book firstBook = new Book("First Book");
+        myLibrary.addBook(firstBook);
+
+        // Act
+        String OneBookList = myLibrary.getBookList();
+        // Assert
+        assertThat(OneBookList, is("First Book\n"));
+    }
+
+    @Test
+    public void shouldReturnAStringListWhenTwoBooksAdded(){
+        // Arrange
+        Library myLibrary = new Library("My Library");
+        Book firstBook = new Book("First Book");
+        Book secondBook = new Book("Second Book");
+        myLibrary.addBook(firstBook);
+        myLibrary.addBook(secondBook);
+
+        // Act
+        String OneBookList = myLibrary.getBookList();
+        // Assert
+        assertThat(OneBookList, is("First Book\nSecond Book\n"));
+    }
 }
 
 
