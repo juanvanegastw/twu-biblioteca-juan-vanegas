@@ -84,8 +84,10 @@ public class LibraryTest {
 
         // Act
         String OneBookList = myLibrary.getBookList();
+
         // Assert
-        assertThat(OneBookList, is("First Book\n"));
+        Integer linesNumber = OneBookList.split("/n").length;
+        assertThat(linesNumber, is(1));
     }
 
     @Test
@@ -99,8 +101,10 @@ public class LibraryTest {
 
         // Act
         String OneBookList = myLibrary.getBookList();
+
         // Assert
-        assertThat(OneBookList, is("First Book\nSecond Book\n"));
+        Integer linesNumber = OneBookList.split("\n").length;
+        assertThat(linesNumber, is(2));
     }
 }
 
