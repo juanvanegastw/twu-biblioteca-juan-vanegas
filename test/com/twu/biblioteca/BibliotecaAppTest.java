@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -45,7 +46,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldPrintANotNullMessage(){
+    public void shouldPrintANotNullMessageListingBooks(){
         //Setting
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
@@ -61,6 +62,103 @@ public class BibliotecaAppTest {
 
         // Cleaning
         System.setOut(System.out);
+    }
 
+    @Test
+    public void shouldShowTheGeneralMenu(){
+        // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+
+        // Act
+        myApp.showGeneralMenu();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), is(BibliotecaApp.generalMenu));
+
+        // Cleaning
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void shouldShowTheBookListWhenSelecting1(){
+        // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book");
+        myApp.biblioteca.addBook(firstBook);
+        String totalMessage = BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        Integer messageLinesNumber = totalMessage.split("\n").length;
+
+        // Act
+        myApp.parseOption("1");
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
+
+         // Cleaning
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void shouldShowLeavingMessageWhenSelecting2(){
+  // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+
+        // Act
+        myApp.parseOption("2");
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString(), is(BibliotecaApp.leavingMessage));
+
+        // Cleaning
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void shouldShowBookListWhenInserting1onConsole(){
+        // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book");
+        myApp.biblioteca.addBook(firstBook);
+        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        Integer messageLinesNumber = totalMessage.split("\n").length;
+
+        // Act
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("1\n".getBytes());
+        myApp.userInteraction(byteArrayInputStream);
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
+
+        // Cleaning
+        System.setIn(System.in);
+    }
+     @Test
+    public void shouldShowBookListWhenInserting2onConsole(){
+        // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book");
+        myApp.biblioteca.addBook(firstBook);
+        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.leavingMessage;
+        Integer messageLinesNumber = totalMessage.split("\n").length;
+
+        // Act
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("2\r\n".getBytes());
+        myApp.userInteraction(byteArrayInputStream);
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
+
+        // Cleaning
+        System.setIn(System.in);
     }
 }

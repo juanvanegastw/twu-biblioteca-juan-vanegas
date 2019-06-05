@@ -27,8 +27,9 @@ class Library {
 
     String getBookList(){
         StringBuilder bookList = new StringBuilder();
+        if (this.books != null)
         for(Book book : this.books){
-            String bookInfo = book.getName() + "\n";
+            String bookInfo = book.getInfo() + "\n";
             bookList.append(bookInfo);
         }
         return bookList.toString();
