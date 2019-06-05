@@ -140,8 +140,8 @@ public class BibliotecaAppTest {
         // Cleaning
         System.setIn(System.in);
     }
-     @Test
-    public void shouldShowBookListWhenInserting2onConsole(){
+    @Test
+    public void shouldShowLeavingMessageWhenInserting2onConsole(){
         // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -157,6 +157,43 @@ public class BibliotecaAppTest {
 
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
+
+        // Cleaning
+        System.setIn(System.in);
+    }
+
+    @Test
+    public void shouldShowNotRecognizedOptionWhenSelectingOtherOption(){
+  // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+
+        // Act
+        myApp.parseOption("5");
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString(), is(BibliotecaApp.invalidOptionMessage));
+
+        // Cleaning
+        System.setOut(System.out);
+    }
+
+    @Test
+    public void shouldShowErrorMessageWhenInsertingANotRecognizedOptionOnConsole(){
+        // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.invalidOptionMessage;
+        Integer messageLinesNumber = totalMessage.split("\n").length;
+
+        // Act
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("Unrecognized\r\n".getBytes());
+        myApp.userInteraction(byteArrayInputStream);
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString(), is(totalMessage));
 
         // Cleaning
         System.setIn(System.in);

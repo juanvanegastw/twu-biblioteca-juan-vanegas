@@ -9,6 +9,7 @@ public class BibliotecaApp {
     static String availableBooksMessage = "Here you can see a list of the books\n\n";
     static String generalMenu = "Select an option\nInsert \"1\" to show book list\nInsert \"2\" to quit\nInsert and press Enter:";
     static String leavingMessage = "Thanks for using Biblioteca";
+    static String invalidOptionMessage = "Please select a valid option!\n";
 
     Library biblioteca = new Library("Biblioteca");
 
@@ -36,11 +37,21 @@ public class BibliotecaApp {
         System.out.print(generalMenu);
     }
 
+    void showInvalidOptionMessage(){
+        System.out.print(invalidOptionMessage);
+    }
+
     void parseOption(String option){
-        if (option.equals("1"))
-            listBooks();
-        else
-            showLeavingMessage();
+        switch (option){
+            case "1":
+                listBooks();
+                break;
+            case "2":
+                showLeavingMessage();
+                break;
+            default:
+                showInvalidOptionMessage();
+        }
     }
 
     void showLeavingMessage(){
