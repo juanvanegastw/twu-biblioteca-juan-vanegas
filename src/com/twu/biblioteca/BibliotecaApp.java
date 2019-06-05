@@ -1,6 +1,9 @@
 package com.twu.biblioteca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class BibliotecaApp {
@@ -13,14 +16,14 @@ public class BibliotecaApp {
 
     Library biblioteca = new Library("Biblioteca");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         BibliotecaApp myApp = new BibliotecaApp();
         myApp.biblioteca.addBook(new Book("First Book", 1992, "First Writer"));
         myApp.biblioteca.addBook(new Book("Second Book", 2019, "Second Writer"));
         myApp.biblioteca.addBook(new Book("Third Book", 2010, "Third Writer"));
 
         myApp.showWelcomeMessage();
-        myApp.userInteraction(System.in);
+        myApp.userInteraction(new BufferedReader(new InputStreamReader(System.in)));
     }
 
     void showWelcomeMessage(){
@@ -41,27 +44,31 @@ public class BibliotecaApp {
         System.out.print(invalidOptionMessage);
     }
 
-    void parseOption(String option){
+    boolean parseOption(String option){
+        boolean programMustContinue = true;
         switch (option){
             case "1":
                 listBooks();
                 break;
             case "2":
                 showLeavingMessage();
+                programMustContinue = false;
                 break;
             default:
                 showInvalidOptionMessage();
         }
+        return programMustContinue;
     }
 
     void showLeavingMessage(){
         System.out.print(leavingMessage);
     }
 
-    void userInteraction(InputStream inputStream){
-        Scanner scanner = new Scanner(inputStream);
+    void userInteraction(BufferedReader reader) throws IOException {
         showGeneralMenu();
-        String option = scanner.nextLine();
-        parseOption(option);
+        String option = reader.readLine();
+        boolean programMustContinue = parseOption(option);
+        if(programMustContinue)
+            userInteraction(reader);
     }
 }

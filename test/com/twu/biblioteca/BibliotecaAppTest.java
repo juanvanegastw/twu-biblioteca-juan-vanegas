@@ -5,9 +5,10 @@ import static org.junit.Assert.assertThat;
 import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.io.BufferedReader;
+
+import static org.mockito.Mockito.*;
 
 
 public class BibliotecaAppTest {
@@ -120,19 +121,21 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowBookListWhenInserting1onConsole(){
+    public void shouldShowBookListWhenInserting1onConsole() throws IOException {
         // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
         Book firstBook = new Book("First Book");
         myApp.biblioteca.addBook(firstBook);
-        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage +
+                myApp.biblioteca.getBookList() + BibliotecaApp.generalMenu + BibliotecaApp.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("1\n".getBytes());
-        myApp.userInteraction(byteArrayInputStream);
+        BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("1").thenReturn("2");
+        myApp.userInteraction(bufferedReader);
 
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
@@ -141,7 +144,7 @@ public class BibliotecaAppTest {
         System.setIn(System.in);
     }
     @Test
-    public void shouldShowLeavingMessageWhenInserting2onConsole(){
+    public void shouldShowLeavingMessageWhenInserting2onConsole() throws IOException{
         // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -152,8 +155,9 @@ public class BibliotecaAppTest {
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("2\r\n".getBytes());
-        myApp.userInteraction(byteArrayInputStream);
+        BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("2");
+        myApp.userInteraction(bufferedReader);
 
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
@@ -180,17 +184,41 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowErrorMessageWhenInsertingANotRecognizedOptionOnConsole(){
+    public void shouldShowErrorMessageWhenInsertingANotRecognizedOptionOnConsole() throws IOException{
         // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
-        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.invalidOptionMessage;
-        Integer messageLinesNumber = totalMessage.split("\n").length;
+        String totalMessage = BibliotecaApp.generalMenu + BibliotecaApp.invalidOptionMessage
+                + BibliotecaApp.generalMenu + BibliotecaApp.leavingMessage;
 
         // Act
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("Unrecognized\r\n".getBytes());
-        myApp.userInteraction(byteArrayInputStream);
+        BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("Another").thenReturn("2");
+        myApp.userInteraction(bufferedReader);
+
+        // Verifying
+        assertThat( byteArrayOutputStream.toString(), is(totalMessage));
+
+        // Cleaning
+        System.setIn(System.in);
+    }
+
+    @Test
+    public void shouldShowBookListAndThenCloseWhenSelecting1andthen2() throws IOException{
+        // Arrange
+        BibliotecaApp myApp = new BibliotecaApp();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+
+        String firstlMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        String secondMessage = BibliotecaApp.generalMenu + BibliotecaApp.leavingMessage;
+        String totalMessage = firstlMessage + secondMessage;
+
+        // Act
+        BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("1").thenReturn("2");
+        myApp.userInteraction(bufferedReader);
 
         // Verifying
         assertThat( byteArrayOutputStream.toString(), is(totalMessage));
