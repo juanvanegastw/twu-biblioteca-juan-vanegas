@@ -10,9 +10,14 @@ public class BibliotecaApp {
 
     static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
     static String availableBooksMessage = "Here you can see a list of the books\n\n";
-    static String generalMenu = "Select an option\nInsert \"1\" to show book list\nInsert \"2\" to quit\nInsert and press Enter:";
+    static String generalMenu = "Select an option\n" +
+            "Insert \"1\" to show book list \n" +
+            "Insert \"2\" to quit \n" +
+            "Insert \"3\" to check out a book \n" +
+            "Insert and press Enter:";
     static String leavingMessage = "Thanks for using Biblioteca";
     static String invalidOptionMessage = "Please select a valid option!\n";
+    static String selectBookMessage = "Please select the index of the book you want to Check Out\n";
     private BufferedReader bufferedReader;
 
     Library biblioteca = new Library("Biblioteca");
@@ -39,6 +44,8 @@ public class BibliotecaApp {
         System.out.print(welcomeMessage);
     }
 
+    void showSelectBookMessage() {System.out.print(selectBookMessage);}
+
     void listBooks(){
         String bookList = biblioteca.getBookList();
         System.out.print(availableBooksMessage);
@@ -53,7 +60,7 @@ public class BibliotecaApp {
         System.out.print(invalidOptionMessage);
     }
 
-    boolean parseOption(String option){
+    boolean parseOption(String option) throws IOException{
         boolean programMustContinue = true;
         switch (option){
             case "1":
@@ -62,6 +69,11 @@ public class BibliotecaApp {
             case "2":
                 showLeavingMessage();
                 programMustContinue = false;
+                break;
+            case "3":
+                listBooks();
+                showSelectBookMessage();
+                userCheckingOutBook();
                 break;
             default:
                 showInvalidOptionMessage();
@@ -82,5 +94,19 @@ public class BibliotecaApp {
         boolean programMustContinue = parseOption(readOptionSelected());
         if(programMustContinue)
             userInteraction();
+    }
+
+    void userCheckingOutBook() throws IOException{
+        String bookIndex = readOptionSelected();
+        try {
+            int index = Integer.valueOf(bookIndex);
+            this.biblioteca.checkOutBook(index);
+        }
+        catch (NumberFormatException numberformatException)
+        {
+            System.out.print("Error");
+
+        }
+
     }
 }

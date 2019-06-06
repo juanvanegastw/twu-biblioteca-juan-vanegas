@@ -4,7 +4,8 @@ class Book {
     private String name;
     private Integer publicationYear;
     private Writer author;
-    String infoSeparator = ",";
+    private boolean isCheckOut = false;
+    static String infoSeparator = ",";
     Book(String name) {
         this.name = name;
     }
@@ -22,8 +23,17 @@ class Book {
 
     String getInfo(){
         if (this.publicationYear != null && this.author != null)
-            return String.format("%s" + this.infoSeparator + "%s" + this.infoSeparator + "%d",
+            return String.format("%s" + infoSeparator + "%s" + infoSeparator + "%d",
                                 this.name, this.author.getName(), this.publicationYear );
         return this.name;
+    }
+
+    void setIsCheckOut(boolean state){
+        this.isCheckOut = state;
+
+    }
+
+    boolean getIsCheckOut(){
+        return this.isCheckOut;
     }
 }

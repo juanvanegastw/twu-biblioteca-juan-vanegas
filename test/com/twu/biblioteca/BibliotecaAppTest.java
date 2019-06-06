@@ -83,7 +83,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowTheBookListWhenSelecting1(){
+    public void shouldShowTheBookListWhenSelecting1() throws IOException{
         // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -104,7 +104,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowLeavingMessageWhenSelecting2(){
+    public void shouldShowLeavingMessageWhenSelecting2() throws IOException{
   // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -168,7 +168,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowNotRecognizedOptionWhenSelectingOtherOption(){
+    public void shouldShowNotRecognizedOptionWhenSelectingOtherOption() throws IOException{
   // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -229,4 +229,75 @@ public class BibliotecaAppTest {
         // Cleaning
         System.setIn(System.in);
     }
+
+    @Test
+    public void shouldShowCheckOutMenuWhenSelectinOption3() throws IOException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("3").thenReturn("x").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        String firstMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        String secondMessage = BibliotecaApp.selectBookMessage;
+
+
+        // Act
+        myApp.userInteraction();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
+    @Test
+    public void shouldCheckOutBookWhenSelecting0() throws IOException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("0").thenReturn("0").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book", 1992, "First Writer");
+        myApp.biblioteca.addBook(firstBook);
+
+
+        // Act
+        myApp.userCheckingOutBook();
+
+        // Verifying
+        assertThat(firstBook.getIsCheckOut(), is(true));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
+
+    @Test
+    public void shouldCheckOutBookWhenSelecting3AndThen0() throws IOException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("3").thenReturn("0").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book", 1992, "First Writer");
+        myApp.biblioteca.addBook(firstBook);
+
+
+        // Act
+        myApp.userInteraction();
+
+        // Verifying
+        assertThat(firstBook.getIsCheckOut(), is(true));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
 }

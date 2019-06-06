@@ -27,12 +27,19 @@ class Library {
 
     String getBookList(){
         StringBuilder bookList = new StringBuilder();
-        if (this.books != null)
-        for(Book book : this.books){
-            String bookInfo = book.getInfo() + "\n";
-            bookList.append(bookInfo);
+        if (this.books != null){
+            for(Book book : this.books){
+                String bookInfo = this.books.indexOf(book) + Book.infoSeparator + book.getInfo() + "\n";
+                bookList.append(bookInfo);
+            }
         }
         return bookList.toString();
     }
+
+    boolean checkOutBook(int index){
+        this.books.get(index).setIsCheckOut(true);
+        return true;
+    }
+
 }
 

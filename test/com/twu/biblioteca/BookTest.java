@@ -43,4 +43,17 @@ public class BookTest {
         Assert.assertTrue(bookInfo.split(myBook.infoSeparator).length == 3);
     }
 
+    @Test
+    public void shouldChangeCheckOutStateWhenCheckingItOut(){
+        // Arrange
+        Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
+
+        // Act
+        myBook.setIsCheckOut(true);
+        boolean isCheckOut = myBook.getIsCheckOut();
+
+        // Assert
+        Assert.assertTrue(isCheckOut);
+    }
+
 }

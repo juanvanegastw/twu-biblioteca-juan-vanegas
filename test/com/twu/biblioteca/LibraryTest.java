@@ -1,6 +1,9 @@
 package com.twu.biblioteca;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -106,6 +109,47 @@ public class LibraryTest {
         Integer linesNumber = OneBookList.split("\n").length;
         assertThat(linesNumber, is(2));
     }
+
+    @Test
+    public void shouldPrintBookIndexInfo(){
+        // Arrange
+        Library library = new Library("Biblioteca");
+        Book firstBook = new Book("First Book");
+        Book secondBook = new Book("Second Book");
+        library.addBook(firstBook);
+        library.addBook(secondBook);
+
+        // Act
+        String bookList = library.getBookList();
+
+        // Assert
+        String [] bookListArray = bookList.split("\n");
+        int index = 0;
+        for (String line: bookListArray){
+            String[] lineFields = line.split(Book.infoSeparator);
+            String firstItem = lineFields[0];
+            assertThat(firstItem, is(String.valueOf(index)));
+            index++;
+        }
+    }
+
+    @Test
+    public void shouldSetAsReserveABook(){
+        // Arrange
+        Library library = new Library("Biblioteca");
+        Book firstBook = new Book("First Book");
+        Book secondBook = new Book("Second Book");
+        library.addBook(firstBook);
+        library.addBook(secondBook);
+
+        // Act
+        library.checkOutBook(1);
+
+        // Assert
+        assertThat(secondBook.getIsCheckOut(), is(true));
+
+    }
+
 }
 
 
