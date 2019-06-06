@@ -28,7 +28,11 @@ class Book {
         return this.name;
     }
 
-    void setIsCheckOut(boolean state){
+    void setIsCheckOut(boolean state) throws BookAlreadyCheckedOutException{
+        if (state && this.isCheckOut )
+        {
+            throw new BookAlreadyCheckedOutException();
+        }
         this.isCheckOut = state;
 
     }
@@ -37,3 +41,8 @@ class Book {
         return this.isCheckOut;
     }
 }
+
+class BookAlreadyCheckedOutException extends Exception{
+
+}
+

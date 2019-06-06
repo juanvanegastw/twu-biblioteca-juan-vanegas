@@ -39,7 +39,7 @@ class Library {
         return bookList.toString();
     }
 
-    boolean checkOutBook(int index){
+    boolean checkOutBook(int index) throws BookAlreadyCheckedOutException{
         this.books.get(index).setIsCheckOut(true);
         return true;
     }

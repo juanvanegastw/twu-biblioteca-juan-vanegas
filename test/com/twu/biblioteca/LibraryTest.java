@@ -134,7 +134,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsReserveABook(){
+    public void shouldSetAsReserveABook() throws BookAlreadyCheckedOutException{
         // Arrange
         Library library = new Library("Biblioteca");
         Book firstBook = new Book("First Book");
@@ -151,7 +151,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldShowJustAvailableBooks(){
+    public void shouldShowJustAvailableBooks() throws BookAlreadyCheckedOutException{
         // Arrange
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");

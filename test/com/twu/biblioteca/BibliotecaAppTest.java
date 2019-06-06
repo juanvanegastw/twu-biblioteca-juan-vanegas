@@ -325,4 +325,54 @@ public class BibliotecaAppTest {
 
     }
 
+    @Test
+    public void shouldShowUnsuccessfulMessageWhenSelecting3AndThenAnIndexOutOfArray() throws IOException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("3").thenReturn("1").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book", 1992, "First Writer");
+        myApp.biblioteca.addBook(firstBook);
+        String firstMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        String secondMessage = BibliotecaApp.selectBookMessage + BibliotecaApp.checkoutUnsuccessfullyMessage;
+
+
+        // Act
+        myApp.userInteraction();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
+    @Test
+    public void shouldShowUnsuccessfulMessageWhenSelecting3AndThenACharacterNotParseToInt() throws IOException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("3").thenReturn("x").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book", 1992, "First Writer");
+        myApp.biblioteca.addBook(firstBook);
+        String firstMessage = BibliotecaApp.generalMenu + BibliotecaApp.availableBooksMessage + myApp.biblioteca.getBookList();
+        String secondMessage = BibliotecaApp.selectBookMessage + BibliotecaApp.checkoutUnsuccessfullyMessage;
+
+
+        // Act
+        myApp.userInteraction();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
 }

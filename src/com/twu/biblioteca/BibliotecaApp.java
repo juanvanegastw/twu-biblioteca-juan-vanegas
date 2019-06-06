@@ -19,6 +19,7 @@ public class BibliotecaApp {
     static String invalidOptionMessage = "Please select a valid option!\n";
     static String selectBookMessage = "Please select the index of the book you want to Check Out\n";
     static String checkoutSuccessfullyMessage = "Thank you! Enjoy the book\n";
+    static String checkoutUnsuccessfullyMessage = "Sorry, that book is not available\n";
     private BufferedReader bufferedReader;
 
     Library biblioteca = new Library("Biblioteca");
@@ -90,7 +91,7 @@ public class BibliotecaApp {
         return this.bufferedReader.readLine();
     }
 
-    void userInteraction() throws IOException {
+    void userInteraction() throws IOException{
         showGeneralMenu();
         boolean programMustContinue = parseOption(readOptionSelected());
         if(programMustContinue)
@@ -104,13 +105,18 @@ public class BibliotecaApp {
             this.biblioteca.checkOutBook(index);
             showCheckoutSuccesfullyMessage();
         }
-        catch (NumberFormatException numberformatException)
-        {
-
+        catch (NumberFormatException | IndexOutOfBoundsException|BookAlreadyCheckedOutException exception) {
+            showCheckoutUnsuccesfullyMessage();
         }
+
+
     }
 
     void showCheckoutSuccesfullyMessage(){
         System.out.print(checkoutSuccessfullyMessage);
+    }
+
+    void showCheckoutUnsuccesfullyMessage(){
+        System.out.print(checkoutUnsuccessfullyMessage);
     }
 }
