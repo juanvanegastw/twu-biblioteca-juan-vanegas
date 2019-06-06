@@ -18,6 +18,7 @@ public class BibliotecaApp {
     static String leavingMessage = "Thanks for using Biblioteca";
     static String invalidOptionMessage = "Please select a valid option!\n";
     static String selectBookMessage = "Please select the index of the book you want to Check Out\n";
+    static String checkoutSuccessfullyMessage = "Thank you! Enjoy the book\n";
     private BufferedReader bufferedReader;
 
     Library biblioteca = new Library("Biblioteca");
@@ -101,12 +102,15 @@ public class BibliotecaApp {
         try {
             int index = Integer.valueOf(bookIndex);
             this.biblioteca.checkOutBook(index);
+            showCheckoutSuccesfullyMessage();
         }
         catch (NumberFormatException numberformatException)
         {
-            System.out.print("Error");
 
         }
+    }
 
+    void showCheckoutSuccesfullyMessage(){
+        System.out.print(checkoutSuccessfullyMessage);
     }
 }
