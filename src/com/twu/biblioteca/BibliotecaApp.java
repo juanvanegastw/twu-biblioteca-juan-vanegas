@@ -13,8 +13,17 @@ public class BibliotecaApp {
     static String generalMenu = "Select an option\nInsert \"1\" to show book list\nInsert \"2\" to quit\nInsert and press Enter:";
     static String leavingMessage = "Thanks for using Biblioteca";
     static String invalidOptionMessage = "Please select a valid option!\n";
+    private BufferedReader bufferedReader;
 
     Library biblioteca = new Library("Biblioteca");
+
+    BibliotecaApp ( BufferedReader reader){
+        this.bufferedReader = reader;
+    }
+
+    BibliotecaApp (){
+        this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    }
 
     public static void main(String[] args) throws IOException {
         BibliotecaApp myApp = new BibliotecaApp();
@@ -23,7 +32,7 @@ public class BibliotecaApp {
         myApp.biblioteca.addBook(new Book("Third Book", 2010, "Third Writer"));
 
         myApp.showWelcomeMessage();
-        myApp.userInteraction(new BufferedReader(new InputStreamReader(System.in)));
+        myApp.userInteraction();
     }
 
     void showWelcomeMessage(){
@@ -40,7 +49,7 @@ public class BibliotecaApp {
         System.out.print(generalMenu);
     }
 
-    void showInvalidOptionMessage(){
+    private void showInvalidOptionMessage(){
         System.out.print(invalidOptionMessage);
     }
 
@@ -60,15 +69,18 @@ public class BibliotecaApp {
         return programMustContinue;
     }
 
-    void showLeavingMessage(){
+    private void showLeavingMessage(){
         System.out.print(leavingMessage);
     }
 
-    void userInteraction(BufferedReader reader) throws IOException {
+    private String  readOptionSelected() throws IOException{
+        return this.bufferedReader.readLine();
+    }
+
+    void userInteraction() throws IOException {
         showGeneralMenu();
-        String option = reader.readLine();
-        boolean programMustContinue = parseOption(option);
+        boolean programMustContinue = parseOption(readOptionSelected());
         if(programMustContinue)
-            userInteraction(reader);
+            userInteraction();
     }
 }
