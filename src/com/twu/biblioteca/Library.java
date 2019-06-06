@@ -26,17 +26,23 @@ class Library {
     }
 
     String getBookList(){
+        return getBookList(true);
+    }
+
+    String getBookList(boolean justAvailableBooks){
         StringBuilder bookList = new StringBuilder();
         if (this.books != null){
             for(Book book : this.books){
                 boolean isAvailable = !book.getIsCheckOut();
-                if (isAvailable){
+                boolean mustReturn = isAvailable == justAvailableBooks;
+                if (mustReturn){
                     String bookInfo = this.books.indexOf(book) + Book.infoSeparator + book.getInfo() + "\n";
                     bookList.append(bookInfo);
                 }
             }
         }
         return bookList.toString();
+
     }
 
     void checkOutBook(int index) throws BookAlreadyCheckedOutException{

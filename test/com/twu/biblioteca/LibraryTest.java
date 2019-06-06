@@ -89,7 +89,7 @@ public class LibraryTest {
         String OneBookList = myLibrary.getBookList();
 
         // Assert
-        Integer linesNumber = OneBookList.split("/n").length;
+        Integer linesNumber = OneBookList.split("\n").length;
         assertThat(linesNumber, is(1));
     }
 
@@ -185,6 +185,27 @@ public class LibraryTest {
         // Assert
         assertThat(secondBook.getIsCheckOut(), is(false));
 
+    }
+
+    @Test
+    public void shouldReturnTheListOfMissingBooks() throws BookAlreadyCheckedOutException{
+        // Arrange
+        Library myLibrary = new Library("My Library");
+        Book firstBook = new Book("First Book");
+        myLibrary.addBook(firstBook);
+        Book secondBook = new Book("Second Book");
+        myLibrary.addBook(secondBook);
+        Book thirdBook = new Book("Third Book");
+        myLibrary.addBook(thirdBook);
+
+        // Act
+        myLibrary.checkOutBook(0);
+        myLibrary.checkOutBook(1);
+        String OneBookList = myLibrary.getBookList(false);
+
+        // Assert
+        Integer linesNumber = OneBookList.split("\n").length;
+        assertThat(linesNumber, is(2));
     }
 
 }

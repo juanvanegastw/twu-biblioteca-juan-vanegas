@@ -10,18 +10,20 @@ public class BibliotecaApp {
 
     static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
     static String availableBooksMessage = "Here you can see a list of the books\n\n";
-    static String generalMenu = "Select an option\n" +
+    static String missingBooksMessage = "Here you can see a list of the missing books\n\n";
+    static String generalMenu = "\nSelect an option\n" +
             "Insert \"1\" to show book list \n" +
             "Insert \"2\" to quit \n" +
             "Insert \"3\" to check out a book \n" +
             "Insert \"4\" to return a book \n" +
-            "Insert and press Enter:";
+            "Insert and press Enter:\n";
     static String leavingMessage = "Thanks for using Biblioteca";
     static String invalidOptionMessage = "Please select a valid option!\n";
-    static String selectBookMessage = "Please select the index of the book you want to Check Out\n";
-    static String selectBookToReturnMessage = "Please select the index of the book you want to Return\n";
+    static String selectBookMessage = "\nPlease select the index of the book you want to Check Out\n";
+    static String selectBookToReturnMessage = "\n Please select the index of the book you want to Return\n";
     static String checkoutSuccessfullyMessage = "Thank you! Enjoy the book\n";
     static String checkoutUnsuccessfullyMessage = "Sorry, that book is not available\n";
+    static String checkInSuccessfullyMessage = "Thank you for returning the book\n";
     private BufferedReader bufferedReader;
 
     Library biblioteca = new Library("Biblioteca");
@@ -52,10 +54,20 @@ public class BibliotecaApp {
 
     void showSelectBookToReturnMessage() {System.out.print(selectBookToReturnMessage);}
 
-    void listBooks(){
-        String bookList = biblioteca.getBookList();
-        System.out.print(availableBooksMessage);
+    void listBooks(boolean justAvailable){
+        String bookList = biblioteca.getBookList(justAvailable);
+        if (justAvailable) {
+            System.out.print(availableBooksMessage);
+        }
+        else{
+            System.out.print(missingBooksMessage);
+        }
         System.out.print(bookList);
+    }
+
+    void listBooks(){
+        listBooks(true);
+
     }
 
     void showGeneralMenu(){
@@ -82,9 +94,10 @@ public class BibliotecaApp {
                 userCheckingOutBook();
                 break;
             case "4":
-                listBooks();
+                listBooks(false);
                 showSelectBookToReturnMessage();
                 userCheckInBook();
+                break;
             default:
                 showInvalidOptionMessage();
         }
@@ -124,6 +137,7 @@ public class BibliotecaApp {
         try {
             int index = Integer.valueOf(bookIndex);
             this.biblioteca.checkInBook(index);
+            showCheckInSuccesfullyMessage();
         }
         catch (NumberFormatException | BookAlreadyCheckedOutException exception){}
     }
@@ -135,4 +149,10 @@ public class BibliotecaApp {
     void showCheckoutUnsuccesfullyMessage(){
         System.out.print(checkoutUnsuccessfullyMessage);
     }
+
+    void showCheckInSuccesfullyMessage(){
+        System.out.print(checkInSuccessfullyMessage);
+    }
+
+
 }
