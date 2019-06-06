@@ -34,7 +34,6 @@ class Book {
             throw new BookAlreadyCheckedOutException();
         }
         this.isCheckOut = state;
-
     }
 
     boolean getIsCheckOut(){

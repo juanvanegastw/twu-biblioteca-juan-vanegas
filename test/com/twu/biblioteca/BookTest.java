@@ -68,4 +68,18 @@ public class BookTest {
 
     }
 
+    @Test
+    public void shouldChangeCheckOutStateWhenCheckingItIn() throws BookAlreadyCheckedOutException{
+        // Arrange
+        Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
+
+        // Act
+        myBook.setIsCheckOut(true);
+        myBook.setIsCheckOut(false);
+        boolean isCheckOut = myBook.getIsCheckOut();
+
+        // Assert
+        Assert.assertFalse(isCheckOut);
+    }
+
 }

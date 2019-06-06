@@ -14,10 +14,12 @@ public class BibliotecaApp {
             "Insert \"1\" to show book list \n" +
             "Insert \"2\" to quit \n" +
             "Insert \"3\" to check out a book \n" +
+            "Insert \"4\" to return a book \n" +
             "Insert and press Enter:";
     static String leavingMessage = "Thanks for using Biblioteca";
     static String invalidOptionMessage = "Please select a valid option!\n";
     static String selectBookMessage = "Please select the index of the book you want to Check Out\n";
+    static String selectBookToReturnMessage = "Please select the index of the book you want to Return\n";
     static String checkoutSuccessfullyMessage = "Thank you! Enjoy the book\n";
     static String checkoutUnsuccessfullyMessage = "Sorry, that book is not available\n";
     private BufferedReader bufferedReader;
@@ -48,6 +50,8 @@ public class BibliotecaApp {
 
     void showSelectBookMessage() {System.out.print(selectBookMessage);}
 
+    void showSelectBookToReturnMessage() {System.out.print(selectBookToReturnMessage);}
+
     void listBooks(){
         String bookList = biblioteca.getBookList();
         System.out.print(availableBooksMessage);
@@ -77,6 +81,10 @@ public class BibliotecaApp {
                 showSelectBookMessage();
                 userCheckingOutBook();
                 break;
+            case "4":
+                listBooks();
+                showSelectBookToReturnMessage();
+                userCheckInBook();
             default:
                 showInvalidOptionMessage();
         }
@@ -109,7 +117,15 @@ public class BibliotecaApp {
             showCheckoutUnsuccesfullyMessage();
         }
 
+    }
 
+    void userCheckInBook() throws IOException{
+        String bookIndex = readOptionSelected();
+        try {
+            int index = Integer.valueOf(bookIndex);
+            this.biblioteca.checkInBook(index);
+        }
+        catch (NumberFormatException | BookAlreadyCheckedOutException exception){}
     }
 
     void showCheckoutSuccesfullyMessage(){
