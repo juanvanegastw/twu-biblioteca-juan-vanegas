@@ -29,8 +29,11 @@ class Library {
         StringBuilder bookList = new StringBuilder();
         if (this.books != null){
             for(Book book : this.books){
-                String bookInfo = this.books.indexOf(book) + Book.infoSeparator + book.getInfo() + "\n";
-                bookList.append(bookInfo);
+                boolean isAvailable = !book.getIsCheckOut();
+                if (isAvailable){
+                    String bookInfo = this.books.indexOf(book) + Book.infoSeparator + book.getInfo() + "\n";
+                    bookList.append(bookInfo);
+                }
             }
         }
         return bookList.toString();

@@ -150,6 +150,24 @@ public class LibraryTest {
 
     }
 
+    @Test
+    public void shouldShowJustAvailableBooks(){
+        // Arrange
+        Library myLibrary = new Library("My Library");
+        Book firstBook = new Book("First Book");
+        Book secondBook = new Book("Second Book");
+        firstBook.setIsCheckOut(true);
+        myLibrary.addBook(firstBook);
+        myLibrary.addBook(secondBook);
+
+        // Act
+        String OneBookList = myLibrary.getBookList();
+
+        // Assert
+        Integer linesNumber = OneBookList.split("\n").length;
+        assertThat(linesNumber, is(1));
+    }
+
 }
 
 
