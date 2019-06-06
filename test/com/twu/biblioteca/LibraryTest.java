@@ -134,7 +134,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsReserveABook() throws BookAlreadyCheckedOutException{
+    public void shouldSetAsReserveABook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library library = new Library("Biblioteca");
         Book firstBook = new Book("First Book");
@@ -151,7 +151,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldShowJustAvailableBooks() throws BookAlreadyCheckedOutException{
+    public void shouldShowJustAvailableBooks() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");
@@ -169,7 +169,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsUnreserveABook() throws BookAlreadyCheckedOutException{
+    public void shouldSetAsUnreserveABook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library library = new Library("Biblioteca");
         Book firstBook = new Book("First Book");
@@ -188,7 +188,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnTheListOfMissingBooks() throws BookAlreadyCheckedOutException{
+    public void shouldReturnTheListOfMissingBooks() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");

@@ -455,7 +455,33 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThen0() throws IOException{
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThen0() throws IOException, BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book", 1992, "First Writer");
+        myApp.biblioteca.addBook(firstBook);
+        myApp.biblioteca.checkOutBook(0);
+        String firstMessage = BibliotecaApp.generalMenu + BibliotecaApp.missingBooksMessage + myApp.biblioteca.getBookList(false);
+        String secondMessage = BibliotecaApp.selectBookToReturnMessage + BibliotecaApp.checkInSuccessfullyMessage;
+
+
+        // Act
+        myApp.userInteraction();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
+    @Test
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThenANotMissingBook() throws IOException, BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("2");
@@ -465,7 +491,32 @@ public class BibliotecaAppTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         myApp.biblioteca.addBook(firstBook);
         String firstMessage = BibliotecaApp.generalMenu + BibliotecaApp.missingBooksMessage + myApp.biblioteca.getBookList(false);
-        String secondMessage = BibliotecaApp.selectBookToReturnMessage + BibliotecaApp.checkInSuccessfullyMessage;
+        String secondMessage = BibliotecaApp.selectBookToReturnMessage + BibliotecaApp.checkInUnsuccessfullyMessage;
+
+
+        // Act
+        myApp.userInteraction();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
+
+        // Cleaning
+        System.setIn(System.in);
+
+    }
+
+    @Test
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThenABookOutOfIndex() throws IOException, BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("4").thenReturn("1").thenReturn("2");
+        BibliotecaApp myApp = new BibliotecaApp(bufferedReader);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
+        Book firstBook = new Book("First Book", 1992, "First Writer");
+        myApp.biblioteca.addBook(firstBook);
+        String firstMessage = BibliotecaApp.generalMenu + BibliotecaApp.missingBooksMessage + myApp.biblioteca.getBookList(false);
+        String secondMessage = BibliotecaApp.selectBookToReturnMessage + BibliotecaApp.checkInUnsuccessfullyMessage;
 
 
         // Act

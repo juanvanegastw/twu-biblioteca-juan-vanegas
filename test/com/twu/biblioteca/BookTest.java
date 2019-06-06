@@ -44,7 +44,7 @@ public class BookTest {
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItOut() throws BookAlreadyCheckedOutException{
+    public void shouldChangeCheckOutStateWhenCheckingItOut() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -57,7 +57,7 @@ public class BookTest {
     }
 
     @Test(expected = BookAlreadyCheckedOutException.class)
-    public void shouldRaiseExceptionWhenBookAlreadyCheckedOut() throws BookAlreadyCheckedOutException{
+    public void shouldRaiseExceptionWhenBookAlreadyCheckedOut() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -69,7 +69,7 @@ public class BookTest {
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItIn() throws BookAlreadyCheckedOutException{
+    public void shouldChangeCheckOutStateWhenCheckingItIn() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -80,6 +80,17 @@ public class BookTest {
 
         // Assert
         Assert.assertFalse(isCheckOut);
+    }
+
+    @Test(expected = BookAlreadyCheckedInException.class)
+    public void shouldRaiseExceptionWhenBookAlreadyCheckedIn() throws BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
+        // Arrange
+        Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
+
+        // Act
+        myBook.setIsCheckOut(false);
+
+
     }
 
 }

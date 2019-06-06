@@ -24,6 +24,7 @@ public class BibliotecaApp {
     static String checkoutSuccessfullyMessage = "Thank you! Enjoy the book\n";
     static String checkoutUnsuccessfullyMessage = "Sorry, that book is not available\n";
     static String checkInSuccessfullyMessage = "Thank you for returning the book\n";
+    static String checkInUnsuccessfullyMessage = "That is not a valid book to return\n";
     private BufferedReader bufferedReader;
 
     Library biblioteca = new Library("Biblioteca");
@@ -126,7 +127,7 @@ public class BibliotecaApp {
             this.biblioteca.checkOutBook(index);
             showCheckoutSuccesfullyMessage();
         }
-        catch (NumberFormatException | IndexOutOfBoundsException|BookAlreadyCheckedOutException exception) {
+        catch (NumberFormatException | IndexOutOfBoundsException| BookAlreadyCheckedOutException | BookAlreadyCheckedInException exception) {
             showCheckoutUnsuccesfullyMessage();
         }
 
@@ -139,7 +140,9 @@ public class BibliotecaApp {
             this.biblioteca.checkInBook(index);
             showCheckInSuccesfullyMessage();
         }
-        catch (NumberFormatException | BookAlreadyCheckedOutException exception){}
+        catch (NumberFormatException | IndexOutOfBoundsException | BookAlreadyCheckedOutException | BookAlreadyCheckedInException exception){
+            showCheckInUnsuccesfullyMessage();
+        }
     }
 
     void showCheckoutSuccesfullyMessage(){
@@ -152,6 +155,10 @@ public class BibliotecaApp {
 
     void showCheckInSuccesfullyMessage(){
         System.out.print(checkInSuccessfullyMessage);
+    }
+
+    void showCheckInUnsuccesfullyMessage(){
+        System.out.print(checkInUnsuccessfullyMessage);
     }
 
 
