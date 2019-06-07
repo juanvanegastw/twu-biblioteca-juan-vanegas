@@ -1,11 +1,8 @@
 package com.twu.biblioteca;
 
-class Book {
-    private String name;
+class Book extends LibraryRentItem{
     private Integer publicationYear;
     private Writer author;
-    private boolean isCheckOut = false;
-    static String infoSeparator = ",";
     Book(String name) {
         this.name = name;
     }
@@ -17,39 +14,13 @@ class Book {
 
     }
 
-    String getName(){
-        return this.name;
-    }
-
-    String getInfo(){
+    String[] getDataInfo(){
         if (this.publicationYear != null && this.author != null)
-            return String.format("%s" + infoSeparator + "%s" + infoSeparator + "%d",
-                                this.name, this.author.getName(), this.publicationYear );
-        return this.name;
-    }
-
-    void setIsCheckOut(boolean state) throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
-        if (state && this.isCheckOut )
         {
-            throw new BookAlreadyCheckedOutException();
+            return new String [] {this.name, this.author.getName(), String.valueOf(this.publicationYear)};
         }
-        else if (!state && !this.isCheckOut)
-        {
-            throw new BookAlreadyCheckedInException();
-        }
-        this.isCheckOut = state;
-    }
-
-    boolean getIsCheckOut(){
-        return this.isCheckOut;
+        return super.getDataInfo();
     }
 }
 
-class BookAlreadyCheckedOutException extends Exception{
-
-}
-
-class BookAlreadyCheckedInException extends Exception{
-
-}
 

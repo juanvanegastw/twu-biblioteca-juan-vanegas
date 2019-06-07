@@ -45,11 +45,11 @@ class Library {
 
     }
 
-    void checkOutBook(int index) throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    void checkOutBook(int index) throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
         this.books.get(index).setIsCheckOut(true);
     }
 
-    void checkInBook(int index) throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    void checkInBook(int index) throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
         this.books.get(index).setIsCheckOut(false);
     }
 

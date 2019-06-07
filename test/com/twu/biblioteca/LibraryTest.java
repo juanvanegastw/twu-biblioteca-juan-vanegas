@@ -2,8 +2,6 @@ package com.twu.biblioteca;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -134,7 +132,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsReserveABook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    public void shouldSetAsReserveABook() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
         // Arrange
         Library library = new Library("Biblioteca");
         Book firstBook = new Book("First Book");
@@ -151,7 +149,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldShowJustAvailableBooks() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    public void shouldShowJustAvailableBooks() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
         // Arrange
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");
@@ -169,7 +167,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsUnreserveABook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    public void shouldSetAsUnreserveABook() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
         // Arrange
         Library library = new Library("Biblioteca");
         Book firstBook = new Book("First Book");
@@ -188,7 +186,7 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnTheListOfMissingBooks() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    public void shouldReturnTheListOfMissingBooks() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
         // Arrange
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");

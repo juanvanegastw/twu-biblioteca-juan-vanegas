@@ -2,9 +2,7 @@ package com.twu.biblioteca;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class BibliotecaApp {
 
@@ -127,7 +125,7 @@ public class BibliotecaApp {
             this.biblioteca.checkOutBook(index);
             showCheckoutSuccesfullyMessage();
         }
-        catch (NumberFormatException | IndexOutOfBoundsException| BookAlreadyCheckedOutException | BookAlreadyCheckedInException exception) {
+        catch (NumberFormatException | IndexOutOfBoundsException| ItemAlreadyCheckedOutException | ItemAlreadyCheckedInException exception) {
             showCheckoutUnsuccesfullyMessage();
         }
 
@@ -140,7 +138,7 @@ public class BibliotecaApp {
             this.biblioteca.checkInBook(index);
             showCheckInSuccesfullyMessage();
         }
-        catch (NumberFormatException | IndexOutOfBoundsException | BookAlreadyCheckedOutException | BookAlreadyCheckedInException exception){
+        catch (NumberFormatException | IndexOutOfBoundsException | ItemAlreadyCheckedOutException | ItemAlreadyCheckedInException exception){
             showCheckInUnsuccesfullyMessage();
         }
     }

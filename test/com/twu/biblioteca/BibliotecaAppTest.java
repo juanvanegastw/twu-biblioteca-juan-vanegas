@@ -409,7 +409,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldReturnBookWhenSelecting0() throws IOException, BookAlreadyCheckedOutException{
+    public void shouldReturnBookWhenSelecting0() throws IOException, ItemAlreadyCheckedOutException {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("0");
@@ -455,7 +455,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThen0() throws IOException, BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThen0() throws IOException, ItemAlreadyCheckedInException, ItemAlreadyCheckedOutException {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("2");
@@ -481,7 +481,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThenANotMissingBook() throws IOException, BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThenANotMissingBook() throws IOException, ItemAlreadyCheckedInException, ItemAlreadyCheckedOutException {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("2");
@@ -506,7 +506,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThenABookOutOfIndex() throws IOException, BookAlreadyCheckedInException, BookAlreadyCheckedOutException{
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThenABookOutOfIndex() throws IOException, ItemAlreadyCheckedInException, ItemAlreadyCheckedOutException {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("1").thenReturn("2");
