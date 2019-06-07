@@ -1,20 +1,23 @@
 package com.twu.biblioteca.library;
 
+import com.twu.biblioteca.library.book.Book;
+import com.twu.biblioteca.library.rent.RentItemException;
+import com.twu.biblioteca.library.rent.RentItemService;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
-public class LibraryTest {
+public class RentItemServiceTest {
 
     @Test
     public void shouldAddABook(){
         // Arrange
         Book firstBook = new Book("First Book", 1952, "First Writer");
-        Library myLibrary = new Library("My Library");
+        RentItemService myRentItemService = new RentItemService("My RentItemService");
 
         // Act
-        boolean bookAdded = myLibrary.addBook(firstBook);
+        boolean bookAdded = myRentItemService.addItem(firstBook);
 
         // Assert
         assertThat(bookAdded, is(true));
@@ -23,12 +26,12 @@ public class LibraryTest {
     @Test
     public void shouldReturnAStringListWhenBookAdded(){
         // Arrange
-        Library myLibrary = new Library("My Library");
+        RentItemService myRentItemService = new RentItemService("My RentItemService");
         Book firstBook = new Book("First Book", 1952, "First Writer");
-        myLibrary.addBook(firstBook);
+        myRentItemService.addItem(firstBook);
 
         // Act
-        String OneBookList = myLibrary.getBookList(true);
+        String OneBookList = myRentItemService.getBookList(true);
 
         // Assert
         assertThat(OneBookList, containsString("0,First Book,First Writer,1952"));
@@ -37,14 +40,14 @@ public class LibraryTest {
     @Test
     public void shouldReturnAStringListWhenTwoBooksAdded(){
         // Arrange
-        Library myLibrary = new Library("My Library");
+        RentItemService myRentItemService = new RentItemService("My RentItemService");
         Book firstBook = new Book("First Book", 1952, "First Writer");
         Book secondBook = new Book("Second Book", 1952, "First Writer");
-        myLibrary.addBook(firstBook);
-        myLibrary.addBook(secondBook);
+        myRentItemService.addItem(firstBook);
+        myRentItemService.addItem(secondBook);
 
         // Act
-        String OneBookList = myLibrary.getBookList(true);
+        String OneBookList = myRentItemService.getBookList(true);
 
         // Assert
         assertThat(OneBookList, containsString("0,First Book,First Writer,1952"));
@@ -54,14 +57,14 @@ public class LibraryTest {
     @Test
     public void shouldPrintBookIndexInfo(){
         // Arrange
-        Library library = new Library("Biblioteca");
+        RentItemService rentItemService = new RentItemService("Biblioteca");
         Book firstBook = new Book("First Book", 1952, "First Writer");
         Book secondBook = new Book("Second Book", 1952, "First Writer");
-        library.addBook(firstBook);
-        library.addBook(secondBook);
+        rentItemService.addItem(firstBook);
+        rentItemService.addItem(secondBook);
 
         // Act
-        String bookList = library.getBookList(true);
+        String bookList = rentItemService.getBookList(true);
 
         // Assert
         String [] bookListArray = bookList.split("\n");
@@ -75,16 +78,16 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsReservedABookWhenCheckingItOut() throws LibraryException {
+    public void shouldSetAsReservedABookWhenCheckingItOut() throws RentItemException {
         // Arrange
-        Library library = new Library("Biblioteca");
+        RentItemService rentItemService = new RentItemService("Biblioteca");
         Book firstBook = new Book("First Book", 1952, "First Writer");
         Book secondBook = new Book("Second Book", 1952, "First Writer");
-        library.addBook(firstBook);
-        library.addBook(secondBook);
+        rentItemService.addItem(firstBook);
+        rentItemService.addItem(secondBook);
 
         // Act
-        library.checkOutBook(1);
+        rentItemService.checkOutBook(1);
 
         // Assert
         assertThat(secondBook.getIsCheckOut(), is(true));
@@ -92,9 +95,9 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldShowJustAvailableBooks() throws LibraryException{
+    public void shouldShowJustAvailableBooks() throws RentItemException {
         // Arrange
-        Library myLibrary = new Library("My Library");
+        RentItemService myRentItemService = new RentItemService("My RentItemService");
         Book firstBook = new Book("First Book", 1952, "First Writer");
         Book secondBook = new Book("Second Book", 1952, "First Writer");
 
@@ -103,9 +106,9 @@ public class LibraryTest {
         firstBook.setIsCheckOut(true);
 
         // Assert
-        myLibrary.addBook(firstBook);
-        myLibrary.addBook(secondBook);
-        String OneBookList = myLibrary.getBookList(true);
+        myRentItemService.addItem(firstBook);
+        myRentItemService.addItem(secondBook);
+        String OneBookList = myRentItemService.getBookList(true);
 
         // Assert
         assertThat(OneBookList, containsString("1,Second Book,First Writer,1952"));
@@ -113,17 +116,17 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsNotReservedBookWhenCheckingItOutAndReturningIt() throws LibraryException{
+    public void shouldSetAsNotReservedBookWhenCheckingItOutAndReturningIt() throws RentItemException {
         // Arrange
-        Library library = new Library("Biblioteca");
+        RentItemService rentItemService = new RentItemService("Biblioteca");
         Book firstBook = new Book("First Book", 1952, "First Writer");
         Book secondBook = new Book("Second Book", 1952, "First Writer");
-        library.addBook(firstBook);
-        library.addBook(secondBook);
+        rentItemService.addItem(firstBook);
+        rentItemService.addItem(secondBook);
 
         // Act
-        library.checkOutBook(1);
-        library.checkInBook(1);
+        rentItemService.checkOutBook(1);
+        rentItemService.checkInBook(1);
 
         // Assert
         assertThat(secondBook.getIsCheckOut(), is(false));
@@ -131,20 +134,20 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnTheListOfReservedBooks() throws LibraryException{
+    public void shouldReturnTheListOfReservedBooks() throws RentItemException {
         // Arrange
-        Library myLibrary = new Library("My Library");
+        RentItemService myRentItemService = new RentItemService("My RentItemService");
         Book firstBook = new Book("First Book", 1952, "First Writer");
-        myLibrary.addBook(firstBook);
+        myRentItemService.addItem(firstBook);
         Book secondBook = new Book("Second Book", 1952, "First Writer");
-        myLibrary.addBook(secondBook);
+        myRentItemService.addItem(secondBook);
         Book thirdBook = new Book("Third Book", 1952, "First Writer");
-        myLibrary.addBook(thirdBook);
+        myRentItemService.addItem(thirdBook);
 
         // Act
-        myLibrary.checkOutBook(0);
-        myLibrary.checkOutBook(1);
-        String OneBookList = myLibrary.getBookList(false);
+        myRentItemService.checkOutBook(0);
+        myRentItemService.checkOutBook(1);
+        String OneBookList = myRentItemService.getBookList(false);
 
         // Assert
         assertThat(OneBookList, is("0,First Book,First Writer,1952\n" +

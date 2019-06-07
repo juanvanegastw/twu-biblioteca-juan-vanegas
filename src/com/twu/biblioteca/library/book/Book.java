@@ -1,7 +1,7 @@
-package com.twu.biblioteca.library;
+package com.twu.biblioteca.library.book;
+import com.twu.biblioteca.library.rent.RentItem;
 
-
-public class Book extends LibraryRentItem{
+public class Book extends RentItem {
     private Integer publicationYear;
     private Writer author;
 
@@ -11,7 +11,7 @@ public class Book extends LibraryRentItem{
         this.author = new Writer(authorName);
     }
 
-    String[] getDataInfo(){
+    public String[] getDataInfo(){
         return new String [] {this.name, this.author.getName(), String.valueOf(this.publicationYear)};
     }
 

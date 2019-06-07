@@ -1,14 +1,14 @@
 package com.twu.biblioteca.app;
 
-import com.twu.biblioteca.library.Book;
-import com.twu.biblioteca.library.Library;
+import com.twu.biblioteca.library.book.Book;
+import com.twu.biblioteca.library.rent.RentItemService;
 
 class DataBuilder {
-    protected Library generateLibrary(){
-        Library library = new Library("Biblioteca");
-        library.addBook(new Book("First Book", 1992, "First Writer"));
-        library.addBook(new Book("Second Book", 2019, "Second Writer"));
-        library.addBook(new Book("Third Book", 2010, "Third Writer"));
-        return library;
+    protected RentItemService generateLibrary(){
+        RentItemService rentItemService = new RentItemService("Biblioteca");
+        rentItemService.addItem(new Book("First Book", 1992, "First Writer"));
+        rentItemService.addItem(new Book("Second Book", 2019, "Second Writer"));
+        rentItemService.addItem(new Book("Third Book", 2010, "Third Writer"));
+        return rentItemService;
     }
 }

@@ -1,7 +1,7 @@
 package com.twu.biblioteca.app;
 
-import com.twu.biblioteca.library.Library;
-import com.twu.biblioteca.library.LibraryException;
+import com.twu.biblioteca.library.rent.RentItemService;
+import com.twu.biblioteca.library.rent.RentItemException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 class Menu {
 
     private BufferedReader bufferedReader;
-    private Library library;
+    private RentItemService rentItemService;
 
     protected static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
     protected static String availableBooksMessage = "Here you can see a list of the books\n\n";
@@ -31,13 +31,13 @@ class Menu {
     protected static String generalExceptionMessage = "A error has happened and has thrown the next Exception:\n";
 
 
-    protected Menu ( Library library, BufferedReader reader){
+    protected Menu (RentItemService rentItemService, BufferedReader reader){
         this.bufferedReader = (reader==null) ? new BufferedReader(new InputStreamReader(System.in)): reader;
-        this.library = library;
+        this.rentItemService = rentItemService;
     }
 
     protected void showTheListOfBooks(boolean justAvailable){
-        String bookList = this.library.getBookList(justAvailable);
+        String bookList = this.rentItemService.getBookList(justAvailable);
         if (justAvailable) {
             System.out.print(availableBooksMessage);
         }
@@ -107,10 +107,10 @@ class Menu {
         try {
             String bookIndex = readOptionSelected();
             int index = Integer.valueOf(bookIndex);
-            this.library.checkOutBook(index);
+            this.rentItemService.checkOutBook(index);
             showCheckoutSuccesfullyMessage();
         }
-        catch (NumberFormatException | IndexOutOfBoundsException| LibraryException exception) {
+        catch (NumberFormatException | IndexOutOfBoundsException| RentItemException exception) {
             showCheckoutUnsuccesfullyMessage();
         }
         catch (Exception exception){
@@ -122,10 +122,10 @@ class Menu {
         try {
             String bookIndex = readOptionSelected();
             int index = Integer.valueOf(bookIndex);
-            this.library.checkInBook(index);
+            this.rentItemService.checkInBook(index);
             showCheckInSuccessfullyMessage();
         }
-        catch (NumberFormatException | IndexOutOfBoundsException | LibraryException exception){
+        catch (NumberFormatException | IndexOutOfBoundsException | RentItemException exception){
             showCheckInUnsuccesfullyMessage();
         }
         catch (Exception exception){

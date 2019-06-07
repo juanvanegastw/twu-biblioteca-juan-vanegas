@@ -1,4 +1,6 @@
 package com.twu.biblioteca.library;
+import com.twu.biblioteca.library.book.Book;
+import com.twu.biblioteca.library.rent.RentItemException;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
@@ -19,7 +21,7 @@ public class BookTest {
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItOut() throws LibraryException {
+    public void shouldChangeCheckOutStateWhenCheckingItOut() throws RentItemException {
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -31,8 +33,8 @@ public class BookTest {
         Assert.assertTrue(isCheckOut);
     }
 
-    @Test(expected = ItemAlreadyCheckedOutException.class)
-    public void shouldRaiseExceptionWhenBookAlreadyCheckedOut() throws LibraryException{
+    @Test(expected = RentItemException.class)
+    public void shouldRaiseExceptionWhenBookAlreadyCheckedOut() throws RentItemException {
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -42,7 +44,7 @@ public class BookTest {
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItIn() throws LibraryException{
+    public void shouldChangeCheckOutStateWhenCheckingItIn() throws RentItemException {
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -55,8 +57,8 @@ public class BookTest {
         Assert.assertFalse(isCheckOut);
     }
 
-    @Test(expected = ItemAlreadyCheckedInException.class)
-    public void shouldRaiseExceptionWhenBookAlreadyCheckedIn() throws LibraryException{
+    @Test(expected = RentItemException.class)
+    public void shouldRaiseExceptionWhenBookAlreadyCheckedIn() throws RentItemException {
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 

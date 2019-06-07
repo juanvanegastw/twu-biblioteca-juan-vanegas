@@ -1,15 +1,15 @@
-package com.twu.biblioteca.library;
+package com.twu.biblioteca.library.rent;
 
-public class LibraryRentItem {
+public class RentItem {
     protected String name;
-    static String infoSeparator = ",";
+    public static String infoSeparator = ",";
     protected boolean isCheckOut = false;
 
-    String[] getDataInfo(){
+    public String[] getDataInfo(){
         return new String [] {this.name};
     }
 
-    void setIsCheckOut(boolean state) throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
+    public void setIsCheckOut(boolean state) throws RentItemException {
         if (state && this.isCheckOut )
         {
             throw new ItemAlreadyCheckedOutException();
@@ -21,13 +21,11 @@ public class LibraryRentItem {
         this.isCheckOut = state;
     }
 
-    String getName(){return this.name;}
-
     public boolean getIsCheckOut(){
         return this.isCheckOut;
     }
 
-    String getInfo(){
+    public String getInfo(){
         return String.join(infoSeparator, getDataInfo());
     }
 
