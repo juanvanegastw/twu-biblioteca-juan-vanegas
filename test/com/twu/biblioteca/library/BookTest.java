@@ -1,4 +1,4 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.library;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
@@ -7,42 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class BookTest {
     @Test
-    /**
-     * Allow es redundante
-     */
-    public void shouldAllowToCreateABookWithItsName(){
-        // Arrange
-        Book myBook = new Book("I Robot");
-
-        // Act
-        String bookName = myBook.getName();
-
-        // Assert
-        assertThat(bookName, is("I Robot"));
-
-    }
-
-    @Test
-    /**
-     * Allow es redundante
-     */
-    public void shouldAllowToCreateAnotherBook(){
-        // Arrange
-        Book myBook = new Book("A Song of Fire and Ice");
-
-        // Act
-        String bookName = myBook.getName();
-
-        // Assert
-        assertThat(bookName, is("A Song of Fire and Ice"));
-    }
-
-    @Test
-    /**
-     * Allow es redundante.
-     * Esta prueba sólo verifica que la longitud sea 3, pero no el contenido del mensaje, asi como tampoco su orden
-     */
-    public void shouldAllowToCreateABookWithItsPublicationYearAndAuthor(){
+    public void shouldCreateABookWithItsPublicationYearAndAuthor(){
         // Arrange
         Book myBook = new Book("I Robot", 1992, "Isaac Asimov");
 
@@ -50,11 +15,11 @@ public class BookTest {
         String bookInfo = myBook.getInfo();
 
         //Assert
-        Assert.assertTrue(bookInfo.split(myBook.infoSeparator).length == 3);
+        assertThat(bookInfo, is("I Robot,Isaac Asimov,1992"));
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItOut() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    public void shouldChangeCheckOutStateWhenCheckingItOut() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException {
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -74,8 +39,6 @@ public class BookTest {
         // Act
         myBook.setIsCheckOut(true);
         myBook.setIsCheckOut(true);
-
-
     }
 
     @Test
