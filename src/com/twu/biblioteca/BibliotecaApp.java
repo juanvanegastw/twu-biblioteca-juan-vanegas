@@ -2,10 +2,13 @@ package com.twu.biblioteca;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
+/**
+ * Separar responsabilidades de la clase BibliotecaApp (hace muchas cosas, ej. crear la clase menú)
+ * Remover imports innecesarios.
+ * Definir los modificadores de acceso de todos los métodos.
+ */
 public class BibliotecaApp {
 
     static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
@@ -27,8 +30,14 @@ public class BibliotecaApp {
     static String checkInUnsuccessfullyMessage = "That is not a valid book to return\n";
     private BufferedReader bufferedReader;
 
+    /**
+     * Sería más claro si este objeto se llama library ya que todo el codigo esta en inglés
+     */
     Library biblioteca = new Library("Biblioteca");
 
+    /**
+     * Este constructor sólo se usa en las pruebas, removerlo ya que es innecesario
+     */
     BibliotecaApp ( BufferedReader reader){
         this.bufferedReader = reader;
     }
@@ -37,8 +46,13 @@ public class BibliotecaApp {
         this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    /**
+     * Separar lógica del main a una clase Main
+     * Recibir bibilioteca en el constructor de Biblioteca
+     */
     public static void main(String[] args) throws IOException {
         BibliotecaApp myApp = new BibliotecaApp();
+        //Mover la carga de datos a otra clase
         myApp.biblioteca.addBook(new Book("First Book", 1992, "First Writer"));
         myApp.biblioteca.addBook(new Book("Second Book", 2019, "Second Writer"));
         myApp.biblioteca.addBook(new Book("Third Book", 2010, "Third Writer"));
@@ -55,6 +69,9 @@ public class BibliotecaApp {
 
     void showSelectBookToReturnMessage() {System.out.print(selectBookToReturnMessage);}
 
+    /**
+     * ListBooks limita a que el método siempre devuelva una lista, qué pasa cuando cambio el tipo de dato
+     */
     void listBooks(boolean justAvailable){
         String bookList = biblioteca.getBookList(justAvailable);
         if (justAvailable) {
@@ -66,11 +83,6 @@ public class BibliotecaApp {
         System.out.print(bookList);
     }
 
-    void listBooks(){
-        listBooks(true);
-
-    }
-
     void showGeneralMenu(){
         System.out.print(generalMenu);
     }
@@ -79,18 +91,21 @@ public class BibliotecaApp {
         System.out.print(invalidOptionMessage);
     }
 
+    /**
+     * El nombre de este método no es lo sificientemente descriptivo
+     */
     boolean parseOption(String option) throws IOException{
         boolean programMustContinue = true;
         switch (option){
             case "1":
-                listBooks();
+                listBooks(true);
                 break;
             case "2":
                 showLeavingMessage();
                 programMustContinue = false;
                 break;
             case "3":
-                listBooks();
+                listBooks(true);
                 showSelectBookMessage();
                 userCheckingOutBook();
                 break;
@@ -109,10 +124,13 @@ public class BibliotecaApp {
         System.out.print(leavingMessage);
     }
 
-    private String  readOptionSelected() throws IOException{
+    private String readOptionSelected() throws IOException{
         return this.bufferedReader.readLine();
     }
 
+    /**
+     * Los nombres de los métodos empiezan con una acción.
+     */
     void userInteraction() throws IOException{
         showGeneralMenu();
         boolean programMustContinue = parseOption(readOptionSelected());
@@ -120,6 +138,10 @@ public class BibliotecaApp {
             userInteraction();
     }
 
+    /**
+     * ¿Qué pasa cuando recibes un Exception?
+     * Los nombres de los métodos empiezan con una acción.
+     */
     void userCheckingOutBook() throws IOException{
         String bookIndex = readOptionSelected();
         try {
@@ -130,9 +152,12 @@ public class BibliotecaApp {
         catch (NumberFormatException | IndexOutOfBoundsException| BookAlreadyCheckedOutException | BookAlreadyCheckedInException exception) {
             showCheckoutUnsuccesfullyMessage();
         }
-
     }
 
+    /**
+     * Los nombres de los métodos empiezan con una acción.
+     * ¿Qué pasa cuando recibes un Exception?
+     */
     void userCheckInBook() throws IOException{
         String bookIndex = readOptionSelected();
         try {
@@ -160,6 +185,4 @@ public class BibliotecaApp {
     void showCheckInUnsuccesfullyMessage(){
         System.out.print(checkInUnsuccessfullyMessage);
     }
-
-
 }

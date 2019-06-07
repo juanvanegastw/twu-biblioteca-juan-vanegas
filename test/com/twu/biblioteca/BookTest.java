@@ -7,6 +7,9 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class BookTest {
     @Test
+    /**
+     * Allow es redundante
+     */
     public void shouldAllowToCreateABookWithItsName(){
         // Arrange
         Book myBook = new Book("I Robot");
@@ -20,6 +23,9 @@ public class BookTest {
     }
 
     @Test
+    /**
+     * Allow es redundante
+     */
     public void shouldAllowToCreateAnotherBook(){
         // Arrange
         Book myBook = new Book("A Song of Fire and Ice");
@@ -32,6 +38,10 @@ public class BookTest {
     }
 
     @Test
+    /**
+     * Allow es redundante.
+     * Esta prueba sólo verifica que la longitud sea 3, pero no el contenido del mensaje, asi como tampoco su orden
+     */
     public void shouldAllowToCreateABookWithItsPublicationYearAndAuthor(){
         // Arrange
         Book myBook = new Book("I Robot", 1992, "Isaac Asimov");

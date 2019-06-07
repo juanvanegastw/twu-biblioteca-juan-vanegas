@@ -2,13 +2,15 @@ package com.twu.biblioteca;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 public class LibraryTest {
+
     @Test
+    /**
+     * Allow es redundante
+     */
     public void shouldAllowToCreateALibraryWithItsName(){
         // Setting
         Library myLibrary = new Library("Awesome Library");
@@ -22,6 +24,9 @@ public class LibraryTest {
     }
 
     @Test
+    /**
+     * Allow es redundante
+     */
     public void shouldAllowToAddABook(){
         // Arrange
         Book firstBook = new Book("First Book");
@@ -36,6 +41,9 @@ public class LibraryTest {
 
 
     @Test
+    /**
+     * SUT solo es llamado en pruebas, ¿es necesario tener esta prueba?.
+     */
     public void shouldReturnTheBooksQuantity(){
         // Arrange
         Library myLibrary = new Library("My Library");
@@ -53,13 +61,17 @@ public class LibraryTest {
         // Arrange
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");
-        myLibrary.addBook(firstBook);
 
         // Act
-        Integer booksQuantity = myLibrary.getBooksQuantity();
+        myLibrary.addBook(firstBook);
+
+
+        Integer actualBooksQuantity = myLibrary.getBooksQuantity();
 
         // Assert
-        assertThat(booksQuantity, is(1));
+        // Podrias definir claramanete los nombres del expected y el actual para que sea más legible
+        int expectedBooksQuantity = 1;
+        assertThat(actualBooksQuantity, is(expectedBooksQuantity));
     }
 
     @Test
@@ -68,13 +80,14 @@ public class LibraryTest {
         Library myLibrary = new Library("My Library");
         Book firstBook = new Book("First Book");
         Book secondBook = new Book("Second Book");
+
+        // Act
         myLibrary.addBook(firstBook);
         myLibrary.addBook(secondBook);
 
-        // Act
-        Integer booksQuantity = myLibrary.getBooksQuantity();
-
         // Assert
+        Integer booksQuantity = myLibrary.getBooksQuantity();
+        // Podrias definir claramanete los nombres del expected y el actual para que sea más legible
         assertThat(booksQuantity, is(2));
     }
 
@@ -134,7 +147,10 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldSetAsReserveABook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
+    /**
+     * El nombre de la prueba no es decriptivo frente a lo que esta probando
+     */
+    public void shouldSetAsReservedABookWhenCheckingOutBook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library library = new Library("Biblioteca");
         Book firstBook = new Book("First Book");
@@ -169,6 +185,9 @@ public class LibraryTest {
     }
 
     @Test
+    /**
+     * El nombre de la prueba no es decriptivo frente a lo que esta probando
+     */
     public void shouldSetAsUnreserveABook() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library library = new Library("Biblioteca");
@@ -188,6 +207,9 @@ public class LibraryTest {
     }
 
     @Test
+    /**
+     * Deberían llamarse missingBooks o reservedBooks?
+     */
     public void shouldReturnTheListOfMissingBooks() throws BookAlreadyCheckedOutException, BookAlreadyCheckedInException{
         // Arrange
         Library myLibrary = new Library("My Library");

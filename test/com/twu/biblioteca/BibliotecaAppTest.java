@@ -1,16 +1,22 @@
 package com.twu.biblioteca;
 
-import org.junit.Test;
-import static org.junit.Assert.assertThat;
 import org.junit.Assert;
-import static org.hamcrest.CoreMatchers.*;
+import org.junit.Test;
 
-import java.io.*;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
-import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-
+/**
+ * Separar responsabilidades de la clase BibliotecaApp (hace muchas cosas, ej. crear la clase menú y crear sus pruebas)
+ */
 public class BibliotecaAppTest {
 
     @Test
@@ -56,7 +62,7 @@ public class BibliotecaAppTest {
         myApp.biblioteca.addBook(firstBook);
 
         //Executing
-        myApp.listBooks();
+        myApp.listBooks(true);
 
         //Verifying
         Assert.assertTrue(byteArrayOutputStream.toString().length() > 0);
@@ -99,13 +105,13 @@ public class BibliotecaAppTest {
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
 
-         // Cleaning
+        // Cleaning
         System.setOut(System.out);
     }
 
     @Test
     public void shouldShowLeavingMessageWhenSelecting2() throws IOException{
-  // Arrange
+        // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
@@ -169,7 +175,7 @@ public class BibliotecaAppTest {
 
     @Test
     public void shouldShowNotRecognizedOptionWhenSelectingOtherOption() throws IOException{
-  // Arrange
+        // Arrange
         BibliotecaApp myApp = new BibliotecaApp();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
