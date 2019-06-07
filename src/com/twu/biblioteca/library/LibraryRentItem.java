@@ -1,4 +1,4 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.library;
 
 public class LibraryRentItem {
     protected String name;
@@ -23,7 +23,7 @@ public class LibraryRentItem {
 
     String getName(){return this.name;}
 
-    boolean getIsCheckOut(){
+    public boolean getIsCheckOut(){
         return this.isCheckOut;
     }
 
@@ -33,10 +33,4 @@ public class LibraryRentItem {
 
 }
 
-class ItemAlreadyCheckedOutException extends Exception{
 
-}
-
-class ItemAlreadyCheckedInException extends Exception{
-
-}

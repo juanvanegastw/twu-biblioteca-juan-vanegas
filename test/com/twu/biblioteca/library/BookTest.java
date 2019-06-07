@@ -1,4 +1,4 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.library;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
@@ -7,32 +7,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class BookTest {
     @Test
-    public void shouldAllowToCreateABookWithItsName(){
-        // Arrange
-        Book myBook = new Book("I Robot");
-
-        // Act
-        String bookName = myBook.getName();
-
-        // Assert
-        assertThat(bookName, is("I Robot"));
-
-    }
-
-    @Test
-    public void shouldAllowToCreateAnotherBook(){
-        // Arrange
-        Book myBook = new Book("A Song of Fire and Ice");
-
-        // Act
-        String bookName = myBook.getName();
-
-        // Assert
-        assertThat(bookName, is("A Song of Fire and Ice"));
-    }
-
-    @Test
-    public void shouldAllowToCreateABookWithItsPublicationYearAndAuthor(){
+    public void shouldCreateABookWithItsPublicationYearAndAuthor(){
         // Arrange
         Book myBook = new Book("I Robot", 1992, "Isaac Asimov");
 
@@ -40,11 +15,11 @@ public class BookTest {
         String bookInfo = myBook.getInfo();
 
         //Assert
-        Assert.assertTrue(bookInfo.split(myBook.infoSeparator).length == 3);
+        assertThat(bookInfo, is("I Robot,Isaac Asimov,1992"));
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItOut() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
+    public void shouldChangeCheckOutStateWhenCheckingItOut() throws LibraryException {
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -57,19 +32,17 @@ public class BookTest {
     }
 
     @Test(expected = ItemAlreadyCheckedOutException.class)
-    public void shouldRaiseExceptionWhenBookAlreadyCheckedOut() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
+    public void shouldRaiseExceptionWhenBookAlreadyCheckedOut() throws LibraryException{
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
         // Act
         myBook.setIsCheckOut(true);
         myBook.setIsCheckOut(true);
-
-
     }
 
     @Test
-    public void shouldChangeCheckOutStateWhenCheckingItIn() throws ItemAlreadyCheckedOutException, ItemAlreadyCheckedInException {
+    public void shouldChangeCheckOutStateWhenCheckingItIn() throws LibraryException{
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 
@@ -83,7 +56,7 @@ public class BookTest {
     }
 
     @Test(expected = ItemAlreadyCheckedInException.class)
-    public void shouldRaiseExceptionWhenBookAlreadyCheckedIn() throws ItemAlreadyCheckedInException, ItemAlreadyCheckedOutException {
+    public void shouldRaiseExceptionWhenBookAlreadyCheckedIn() throws LibraryException{
         // Arrange
         Book myBook = new Book("I Robot", 1959, "Isaac Asimos");
 

@@ -1,11 +1,12 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.library;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 public class WriterTest {
+
     @Test
-    public void shouldAllowToCreateAuthorWithItsName(){
+    public void shouldCreateAWriterUsingItsName(){
         // Arrange
         String writerName = "Author";
 
