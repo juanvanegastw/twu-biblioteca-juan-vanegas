@@ -9,7 +9,8 @@ import java.io.InputStreamReader;
 class Menu {
 
     private BufferedReader bufferedReader;
-    private RentItemService rentItemService;
+    private RentItemService rentBooksItemService;
+    private RentItemService rentMoviesItemService;
 
     protected static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
     protected static String availableBooksMessage = "Here you can see a list of the books\n\n";
@@ -31,13 +32,22 @@ class Menu {
     protected static String generalExceptionMessage = "A error has happened and has thrown the next Exception:\n";
 
 
-    protected Menu (RentItemService rentItemService, BufferedReader reader){
+    protected Menu (RentItemService rentBooksItemService, RentItemService rentMoviesItemService, BufferedReader reader){
         this.bufferedReader = (reader==null) ? new BufferedReader(new InputStreamReader(System.in)): reader;
-        this.rentItemService = rentItemService;
+        this.rentBooksItemService = rentBooksItemService;
+        this.rentMoviesItemService = rentMoviesItemService;
     }
 
     protected void showTheListOfBooks(boolean justAvailable){
-        String bookList = this.rentItemService.getBookList(justAvailable);
+        showTheListOfRentItemService(this.rentBooksItemService, justAvailable);
+    }
+
+    protected void showTheListOfMovies(boolean justAvailable){
+        showTheListOfRentItemService(this.rentMoviesItemService, justAvailable);
+    }
+
+    private void showTheListOfRentItemService(RentItemService rentItemService, boolean justAvailable){
+        String bookList = rentItemService.getBookList(justAvailable);
         if (justAvailable) {
             System.out.print(availableBooksMessage);
         }
@@ -62,6 +72,9 @@ class Menu {
                 showTheListOfBooks(true);
                 break;
             case "2":
+                showTheListOfMovies(true);
+                break;
+            case "q":
                 showLeavingMessage();
                 programMustContinue = false;
                 break;
@@ -107,7 +120,7 @@ class Menu {
         try {
             String bookIndex = readOptionSelected();
             int index = Integer.valueOf(bookIndex);
-            this.rentItemService.checkOutBook(index);
+            this.rentBooksItemService.checkOutBook(index);
             showCheckoutSuccesfullyMessage();
         }
         catch (NumberFormatException | IndexOutOfBoundsException| RentItemException exception) {
@@ -122,7 +135,7 @@ class Menu {
         try {
             String bookIndex = readOptionSelected();
             int index = Integer.valueOf(bookIndex);
-            this.rentItemService.checkInBook(index);
+            this.rentBooksItemService.checkInBook(index);
             showCheckInSuccessfullyMessage();
         }
         catch (NumberFormatException | IndexOutOfBoundsException | RentItemException exception){
