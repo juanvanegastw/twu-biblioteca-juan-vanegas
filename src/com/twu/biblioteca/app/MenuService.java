@@ -14,7 +14,7 @@ public class MenuService {
     protected static String checkInSuccessfullyMessage = "Thank you for returning the %s\n";
     protected static String checkInUnsuccessfullyMessage = "That is not a valid %s to return\n";
     protected static String availableItemsMessage = "Here you can see a list of the %s\n\n";
-    protected static String missingItemsMessage = "Here you can see a list of the missing %s\n\n";
+    protected static String reservedItemsMessage = "Here you can see a list of the reserved %s\n\n";
 
     public MenuService(Menu menu, String itemName, RentItemService rentItemService){
         this.menu = menu;
@@ -99,7 +99,7 @@ public class MenuService {
             printMessage(availableItemsMessage);
         }
         else{
-            printMessage(missingItemsMessage);
+            printMessage(reservedItemsMessage);
         }
         System.out.print(itemList);
     }

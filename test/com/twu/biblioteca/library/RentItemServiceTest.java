@@ -1,8 +1,10 @@
 package com.twu.biblioteca.library;
 
 import com.twu.biblioteca.library.book.Book;
+import com.twu.biblioteca.library.rent.RentItem;
 import com.twu.biblioteca.library.rent.RentItemException;
 import com.twu.biblioteca.library.rent.RentItemService;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -10,14 +12,23 @@ import static org.junit.Assert.assertThat;
 
 public class RentItemServiceTest {
 
+    RentItem firstBook;
+    RentItem secondBook ;
+    RentItem thirdBook ;
+
+    @Before
+    public void setUp(){
+        this.firstBook = new RentItem(new Book("First Book", 1952, "First Writer"));
+        this.secondBook = new RentItem(new Book("Second Book", 1952, "First Writer"));
+        this.thirdBook = new RentItem( new Book("Third Book", 1952, "First Writer"));
+    }
     @Test
     public void shouldAddABook(){
         // Arrange
-        Book firstBook = new Book("First Book", 1952, "First Writer");
         RentItemService myRentItemService = new RentItemService("My RentItemService");
 
         // Act
-        boolean bookAdded = myRentItemService.addItem(firstBook);
+        boolean bookAdded = myRentItemService.addItem(this.firstBook);
 
         // Assert
         assertThat(bookAdded, is(true));
@@ -27,8 +38,7 @@ public class RentItemServiceTest {
     public void shouldReturnAStringListWhenBookAdded(){
         // Arrange
         RentItemService myRentItemService = new RentItemService("My RentItemService");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        myRentItemService.addItem(firstBook);
+        myRentItemService.addItem(this.firstBook);
 
         // Act
         String OneBookList = myRentItemService.getItemList(true);
@@ -41,10 +51,8 @@ public class RentItemServiceTest {
     public void shouldReturnAStringListWhenTwoBooksAdded(){
         // Arrange
         RentItemService myRentItemService = new RentItemService("My RentItemService");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        Book secondBook = new Book("Second Book", 1952, "First Writer");
-        myRentItemService.addItem(firstBook);
-        myRentItemService.addItem(secondBook);
+        myRentItemService.addItem(this.firstBook);
+        myRentItemService.addItem(this.secondBook);
 
         // Act
         String OneBookList = myRentItemService.getItemList(true);
@@ -58,10 +66,8 @@ public class RentItemServiceTest {
     public void shouldPrintBookIndexInfo(){
         // Arrange
         RentItemService rentItemService = new RentItemService("Biblioteca");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        Book secondBook = new Book("Second Book", 1952, "First Writer");
-        rentItemService.addItem(firstBook);
-        rentItemService.addItem(secondBook);
+        rentItemService.addItem(this.firstBook);
+        rentItemService.addItem(this.secondBook);
 
         // Act
         String bookList = rentItemService.getItemList(true);
@@ -70,7 +76,7 @@ public class RentItemServiceTest {
         String [] bookListArray = bookList.split("\n");
         int index = 0;
         for (String line: bookListArray){
-            String[] lineFields = line.split(Book.infoSeparator);
+            String[] lineFields = line.split(RentItem.infoSeparator);
             String firstItem = lineFields[0];
             assertThat(firstItem, is(String.valueOf(index)));
             index++;
@@ -81,16 +87,14 @@ public class RentItemServiceTest {
     public void shouldSetAsReservedABookWhenCheckingItOut() throws RentItemException {
         // Arrange
         RentItemService rentItemService = new RentItemService("Biblioteca");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        Book secondBook = new Book("Second Book", 1952, "First Writer");
-        rentItemService.addItem(firstBook);
-        rentItemService.addItem(secondBook);
+        rentItemService.addItem(this.firstBook);
+        rentItemService.addItem(this.secondBook);
 
         // Act
         rentItemService.checkOutItem(1);
 
         // Assert
-        assertThat(secondBook.getIsCheckOut(), is(true));
+        assertThat(this.secondBook.getIsCheckOut(), is(true));
 
     }
 
@@ -98,16 +102,14 @@ public class RentItemServiceTest {
     public void shouldShowJustAvailableBooks() throws RentItemException {
         // Arrange
         RentItemService myRentItemService = new RentItemService("My RentItemService");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        Book secondBook = new Book("Second Book", 1952, "First Writer");
 
         //Act
 
-        firstBook.setIsCheckOut(true);
+        this.firstBook.setIsCheckOut(true);
 
         // Assert
-        myRentItemService.addItem(firstBook);
-        myRentItemService.addItem(secondBook);
+        myRentItemService.addItem(this.firstBook);
+        myRentItemService.addItem(this.secondBook);
         String OneBookList = myRentItemService.getItemList(true);
 
         // Assert
@@ -119,17 +121,15 @@ public class RentItemServiceTest {
     public void shouldSetAsNotReservedBookWhenCheckingItOutAndReturningIt() throws RentItemException {
         // Arrange
         RentItemService rentItemService = new RentItemService("Biblioteca");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        Book secondBook = new Book("Second Book", 1952, "First Writer");
-        rentItemService.addItem(firstBook);
-        rentItemService.addItem(secondBook);
+        rentItemService.addItem(this.firstBook);
+        rentItemService.addItem(this.secondBook);
 
         // Act
         rentItemService.checkOutItem(1);
         rentItemService.checkInItem(1);
 
         // Assert
-        assertThat(secondBook.getIsCheckOut(), is(false));
+        assertThat(this.secondBook.getIsCheckOut(), is(false));
 
     }
 
@@ -137,12 +137,9 @@ public class RentItemServiceTest {
     public void shouldReturnTheListOfReservedBooks() throws RentItemException {
         // Arrange
         RentItemService myRentItemService = new RentItemService("My RentItemService");
-        Book firstBook = new Book("First Book", 1952, "First Writer");
-        myRentItemService.addItem(firstBook);
-        Book secondBook = new Book("Second Book", 1952, "First Writer");
-        myRentItemService.addItem(secondBook);
-        Book thirdBook = new Book("Third Book", 1952, "First Writer");
-        myRentItemService.addItem(thirdBook);
+        myRentItemService.addItem(this.firstBook);
+        myRentItemService.addItem(this.secondBook);
+        myRentItemService.addItem(this.thirdBook);
 
         // Act
         myRentItemService.checkOutItem(0);

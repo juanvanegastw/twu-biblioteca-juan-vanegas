@@ -1,7 +1,8 @@
 package com.twu.biblioteca.library.book;
-import com.twu.biblioteca.library.rent.RentItem;
+import com.twu.biblioteca.library.rent.Item;
 
-public class Book extends RentItem {
+public class Book implements Item {
+    private String name;
     private Integer publicationYear;
     private Writer author;
 

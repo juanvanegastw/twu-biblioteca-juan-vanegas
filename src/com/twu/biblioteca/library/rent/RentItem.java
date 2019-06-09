@@ -1,14 +1,13 @@
 package com.twu.biblioteca.library.rent;
 
 public class RentItem {
-    protected String name;
     public static String infoSeparator = ",";
     protected boolean isCheckOut = false;
+    private Item item;
 
-    public String[] getDataInfo(){
-        return new String [] {this.name};
+    public RentItem(Item item){
+        this.item = item;
     }
-
     public void setIsCheckOut(boolean state) throws RentItemException {
         if (state && this.isCheckOut )
         {
@@ -26,7 +25,7 @@ public class RentItem {
     }
 
     public String getInfo(){
-        return String.join(infoSeparator, getDataInfo());
+        return String.join(infoSeparator, this.item.getDataInfo());
     }
 
 }

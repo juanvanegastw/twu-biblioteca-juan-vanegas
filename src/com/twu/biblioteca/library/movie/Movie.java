@@ -1,8 +1,8 @@
 package com.twu.biblioteca.library.movie;
 
-import com.twu.biblioteca.library.rent.RentItem;
+import com.twu.biblioteca.library.rent.Item;
 
-public class Movie extends RentItem {
+public class Movie implements Item {
     private String name;
     private Integer releaseYear;
     private Director director;
