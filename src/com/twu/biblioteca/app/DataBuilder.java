@@ -19,9 +19,7 @@ class DataBuilder {
         rentItemService.addItem(new Movie("First Movie", 2016, "Director", 5));
         rentItemService.addItem(new Movie("Second Movie", 2016, "Director", 5));
         rentItemService.addItem(new Movie("Third Movie", 2016, "Director", 5));
-
         return rentItemService;
     }
-
 
 }

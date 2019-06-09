@@ -10,8 +10,7 @@ import org.junit.Test;
 
 import java.io.*;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -62,21 +61,7 @@ public class MenuTest {
 
     }
 
-    @Test
-    public void shouldPrintANotNullMessageListingBooks(){
-        //Setting
-        Book firstBook = new Book("First Book", 1992, "First Writer");
-        this.rentItemService.addItem(firstBook);
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
 
-
-        //Executing
-        this.menu.showTheListOfBooks(true);
-
-        //Verifying
-        Assert.assertTrue(this.byteArrayOutputStream.toString().length() > 0);
-
-    }
 
     @Test
     public void shouldShowTheGeneralMenu(){
@@ -92,12 +77,12 @@ public class MenuTest {
     }
 
     @Test
-    public void shouldShowTheBookListWhenSelecting1() throws IOException{
+    public void shouldShowTheBookListWhenSelecting1(){
         // Arrange
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, null);
-        String totalMessage = Menu.availableBooksMessage + this.rentItemService.getItemList(true);
+        String totalMessage = String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
@@ -109,7 +94,7 @@ public class MenuTest {
     }
 
     @Test
-    public void shouldShowLeavingMessageWhenSelectingq() throws IOException{
+    public void shouldShowLeavingMessageWhenSelectingq(){
         // Arrange
         this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
 
@@ -129,7 +114,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.availableBooksMessage +
+        String totalMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") +
                 this.rentItemService.getItemList(true) + Menu.generalMenu + Menu.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
@@ -162,7 +147,7 @@ public class MenuTest {
     }
 
     @Test
-    public void shouldShowNotRecognizedOptionWhenSelectingOtherOption() throws IOException{
+    public void shouldShowNotRecognizedOptionWhenSelectingOtherOption(){
         // Arrange
         this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
 
@@ -199,7 +184,7 @@ public class MenuTest {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
 
-        String firstlMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
+        String firstlMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
         String secondMessage = Menu.generalMenu + Menu.leavingMessage;
         String totalMessage = firstlMessage + secondMessage;
 
@@ -221,8 +206,8 @@ public class MenuTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("x").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
-        String secondMessage = Menu.selectBookMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
+        String secondMessage = String.format(MenuService.selectItemMessage, "book");
 
         // Act
         this.menu.startUserInteraction();
@@ -232,21 +217,6 @@ public class MenuTest {
 
     }
 
-    @Test
-    public void shouldCheckOutBookWhenSelecting0() throws IOException{
-        // Arrange
-        BufferedReader bufferedReader = mock(BufferedReader.class);
-        when((bufferedReader.readLine())).thenReturn("0");
-        Book firstBook = new Book("First Book", 1992, "First Writer");
-        this.rentItemService.addItem(firstBook);
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-
-        // Act
-        this.menu.checkOutABook();
-
-        // Verifying
-        assertThat(firstBook.getIsCheckOut(), is(true));
-    }
 
     @Test
     public void shouldCheckOutBookWhenSelecting3AndThen0() throws IOException{
@@ -273,8 +243,8 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
-        String secondMessage = Menu.selectBookMessage + Menu.checkoutSuccessfullyMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
+        String secondMessage = String.format(MenuService.selectItemMessage, "book")  + String.format(MenuService.checkoutSuccessfullyMessage, "book");
 
 
         // Act
@@ -293,8 +263,8 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
-        String secondMessage = Menu.selectBookMessage + Menu.checkoutUnsuccessfullyMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
+        String secondMessage = String.format(MenuService.selectItemMessage, "book") + String.format(MenuService.checkoutUnsuccessfullyMessage, "book");
 
 
         // Act
@@ -313,8 +283,8 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
-        String secondMessage = Menu.selectBookMessage + Menu.checkoutUnsuccessfullyMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book")+ this.rentItemService.getItemList(true);
+        String secondMessage = String.format(MenuService.selectItemMessage, "book") + String.format(MenuService.checkoutUnsuccessfullyMessage, "book");
 
 
         // Act
@@ -335,33 +305,14 @@ public class MenuTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("x").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
-        String secondMessage = Menu.selectBookToReturnMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.missingItemsMessage, "book") + this.rentItemService.getItemList(false);
+        String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book");
 
         // Act
         this.menu.startUserInteraction();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
-
-    }
-
-    @Test
-    public void shouldReturnBookWhenSelecting0() throws IOException, RentItemException {
-        // Arrange
-        BufferedReader bufferedReader = mock(BufferedReader.class);
-        when((bufferedReader.readLine())).thenReturn("0");
-        Book firstBook = new Book("First Book", 1992, "First Writer");
-        this.rentItemService.addItem(firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-
-
-        // Act
-        this.menu.checkOutABook();
-        this.menu.checkInABook();
-
-        // Verifying
-        assertThat(firstBook.getIsCheckOut(), is(false));
 
     }
 
@@ -373,7 +324,6 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-
 
         // Act
         this.menu.startUserInteraction();
@@ -392,8 +342,8 @@ public class MenuTest {
         this.rentItemService.addItem(firstBook);
         this.rentItemService.checkOutItem(0);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
-        String secondMessage = Menu.selectBookToReturnMessage + Menu.checkInSuccessfullyMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.missingItemsMessage, "book") + this.rentItemService.getItemList(false);
+        String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInSuccessfullyMessage, "book");
 
 
         // Act
@@ -405,7 +355,7 @@ public class MenuTest {
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThenANotMissingBook() throws IOException, RentItemException {
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThenANotMissingBook() throws IOException{
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("q");
@@ -413,29 +363,26 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
-        String secondMessage = Menu.selectBookToReturnMessage + Menu.checkInUnsuccessfullyMessage;
+        String firstMessage = Menu.generalMenu + String.format(MenuService.missingItemsMessage, "book") + this.rentItemService.getItemList(false);
+        String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
 
-
-        // Act
         this.menu.startUserInteraction();
 
-        // Verifying
+        // Verifyin
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
 
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThenABookOutOfIndex() throws IOException, RentItemException {
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThenABookOutOfIndex() throws IOException {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("1").thenReturn("q");
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
-        String secondMessage = Menu.selectBookToReturnMessage + Menu.checkInUnsuccessfullyMessage;
-
+        String firstMessage = Menu.generalMenu + String.format(MenuService.missingItemsMessage, "book") + this.rentItemService.getItemList(false);
+        String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
 
         // Act
         this.menu.startUserInteraction();

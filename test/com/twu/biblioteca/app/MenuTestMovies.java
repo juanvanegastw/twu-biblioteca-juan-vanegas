@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
 public class MenuTestMovies {
 
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    private RentItemService rentItemService = new RentItemService("Biblioteca");
     private RentItemService rentMovieService = new RentItemService("Movies");
     private Menu menu;
     private BufferedReader bufferedReader;
@@ -32,7 +31,7 @@ public class MenuTestMovies {
     }
 
     @After
-    public void cleaning(){
+    public void cleaning() {
         System.setOut(System.out);
     }
 
@@ -43,7 +42,7 @@ public class MenuTestMovies {
         Movie movie = new Movie("I Robot", 2016, "Director", 5);
         this.rentMovieService.addItem(movie);
         this.menu = new Menu(this.rentBookService, this.rentMovieService, this.bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.availableBooksMessage +
+        String totalMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") +
                 this.rentMovieService.getItemList(true) + Menu.generalMenu + Menu.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
