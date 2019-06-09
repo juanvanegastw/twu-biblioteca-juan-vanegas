@@ -31,7 +31,7 @@ public class RentItemServiceTest {
         myRentItemService.addItem(firstBook);
 
         // Act
-        String OneBookList = myRentItemService.getBookList(true);
+        String OneBookList = myRentItemService.getItemList(true);
 
         // Assert
         assertThat(OneBookList, containsString("0,First Book,First Writer,1952"));
@@ -47,7 +47,7 @@ public class RentItemServiceTest {
         myRentItemService.addItem(secondBook);
 
         // Act
-        String OneBookList = myRentItemService.getBookList(true);
+        String OneBookList = myRentItemService.getItemList(true);
 
         // Assert
         assertThat(OneBookList, containsString("0,First Book,First Writer,1952"));
@@ -64,7 +64,7 @@ public class RentItemServiceTest {
         rentItemService.addItem(secondBook);
 
         // Act
-        String bookList = rentItemService.getBookList(true);
+        String bookList = rentItemService.getItemList(true);
 
         // Assert
         String [] bookListArray = bookList.split("\n");
@@ -87,7 +87,7 @@ public class RentItemServiceTest {
         rentItemService.addItem(secondBook);
 
         // Act
-        rentItemService.checkOutBook(1);
+        rentItemService.checkOutItem(1);
 
         // Assert
         assertThat(secondBook.getIsCheckOut(), is(true));
@@ -108,7 +108,7 @@ public class RentItemServiceTest {
         // Assert
         myRentItemService.addItem(firstBook);
         myRentItemService.addItem(secondBook);
-        String OneBookList = myRentItemService.getBookList(true);
+        String OneBookList = myRentItemService.getItemList(true);
 
         // Assert
         assertThat(OneBookList, containsString("1,Second Book,First Writer,1952"));
@@ -125,8 +125,8 @@ public class RentItemServiceTest {
         rentItemService.addItem(secondBook);
 
         // Act
-        rentItemService.checkOutBook(1);
-        rentItemService.checkInBook(1);
+        rentItemService.checkOutItem(1);
+        rentItemService.checkInItem(1);
 
         // Assert
         assertThat(secondBook.getIsCheckOut(), is(false));
@@ -145,9 +145,9 @@ public class RentItemServiceTest {
         myRentItemService.addItem(thirdBook);
 
         // Act
-        myRentItemService.checkOutBook(0);
-        myRentItemService.checkOutBook(1);
-        String OneBookList = myRentItemService.getBookList(false);
+        myRentItemService.checkOutItem(0);
+        myRentItemService.checkOutItem(1);
+        String OneBookList = myRentItemService.getItemList(false);
 
         // Assert
         assertThat(OneBookList, is("0,First Book,First Writer,1952\n" +

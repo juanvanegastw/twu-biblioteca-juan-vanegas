@@ -17,9 +17,10 @@ class Menu {
     protected static String missingBooksMessage = "Here you can see a list of the missing books\n\n";
     protected static String generalMenu = "\nSelect an option\n" +
             "Insert \"1\" to show book list \n" +
-            "Insert \"2\" to quit \n" +
+            "Insert \"2\" to show movie list \n" +
             "Insert \"3\" to check out a book \n" +
             "Insert \"4\" to return a book \n" +
+            "Insert \"q\" to quit \n" +
             "Insert and press Enter:\n";
     protected static String leavingMessage = "Thanks for using Biblioteca";
     protected static String invalidOptionMessage = "Please select a valid option!\n";
@@ -47,7 +48,7 @@ class Menu {
     }
 
     private void showTheListOfRentItemService(RentItemService rentItemService, boolean justAvailable){
-        String bookList = rentItemService.getBookList(justAvailable);
+        String bookList = rentItemService.getItemList(justAvailable);
         if (justAvailable) {
             System.out.print(availableBooksMessage);
         }
@@ -120,7 +121,7 @@ class Menu {
         try {
             String bookIndex = readOptionSelected();
             int index = Integer.valueOf(bookIndex);
-            this.rentBooksItemService.checkOutBook(index);
+            this.rentBooksItemService.checkOutItem(index);
             showCheckoutSuccesfullyMessage();
         }
         catch (NumberFormatException | IndexOutOfBoundsException| RentItemException exception) {
@@ -135,7 +136,7 @@ class Menu {
         try {
             String bookIndex = readOptionSelected();
             int index = Integer.valueOf(bookIndex);
-            this.rentBooksItemService.checkInBook(index);
+            this.rentBooksItemService.checkInItem(index);
             showCheckInSuccessfullyMessage();
         }
         catch (NumberFormatException | IndexOutOfBoundsException | RentItemException exception){

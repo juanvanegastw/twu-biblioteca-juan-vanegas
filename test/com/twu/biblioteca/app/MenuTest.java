@@ -97,7 +97,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, null);
-        String totalMessage = Menu.availableBooksMessage + this.rentItemService.getBookList(true);
+        String totalMessage = Menu.availableBooksMessage + this.rentItemService.getItemList(true);
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
@@ -130,7 +130,7 @@ public class MenuTest {
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String totalMessage = Menu.generalMenu + Menu.availableBooksMessage +
-                this.rentItemService.getBookList(true) + Menu.generalMenu + Menu.leavingMessage;
+                this.rentItemService.getItemList(true) + Menu.generalMenu + Menu.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
@@ -199,7 +199,7 @@ public class MenuTest {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
 
-        String firstlMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getBookList(true);
+        String firstlMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
         String secondMessage = Menu.generalMenu + Menu.leavingMessage;
         String totalMessage = firstlMessage + secondMessage;
 
@@ -221,7 +221,7 @@ public class MenuTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("x").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getBookList(true);
+        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
         String secondMessage = Menu.selectBookMessage;
 
         // Act
@@ -273,7 +273,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getBookList(true);
+        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
         String secondMessage = Menu.selectBookMessage + Menu.checkoutSuccessfullyMessage;
 
 
@@ -293,7 +293,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getBookList(true);
+        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
         String secondMessage = Menu.selectBookMessage + Menu.checkoutUnsuccessfullyMessage;
 
 
@@ -313,7 +313,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getBookList(true);
+        String firstMessage = Menu.generalMenu + Menu.availableBooksMessage + this.rentItemService.getItemList(true);
         String secondMessage = Menu.selectBookMessage + Menu.checkoutUnsuccessfullyMessage;
 
 
@@ -335,7 +335,7 @@ public class MenuTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("x").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getBookList(false);
+        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
         String secondMessage = Menu.selectBookToReturnMessage;
 
         // Act
@@ -390,9 +390,9 @@ public class MenuTest {
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("q");
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
-        this.rentItemService.checkOutBook(0);
+        this.rentItemService.checkOutItem(0);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getBookList(false);
+        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
         String secondMessage = Menu.selectBookToReturnMessage + Menu.checkInSuccessfullyMessage;
 
 
@@ -413,7 +413,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getBookList(false);
+        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
         String secondMessage = Menu.selectBookToReturnMessage + Menu.checkInUnsuccessfullyMessage;
 
 
@@ -433,7 +433,7 @@ public class MenuTest {
         Book firstBook = new Book("First Book", 1992, "First Writer");
         this.rentItemService.addItem(firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getBookList(false);
+        String firstMessage = Menu.generalMenu + Menu.missingBooksMessage + this.rentItemService.getItemList(false);
         String secondMessage = Menu.selectBookToReturnMessage + Menu.checkInUnsuccessfullyMessage;
 
 

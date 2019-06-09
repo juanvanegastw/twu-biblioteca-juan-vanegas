@@ -19,12 +19,12 @@ public class RentItemService {
         return true;
     }
 
-    public String getBookList(boolean justAvailableBooks){
+    public String getItemList(boolean justAvailableItems){
         StringBuilder itemList = new StringBuilder();
         if (this.items != null){
             for(RentItem item : this.items){
-                if (!item.getIsCheckOut() == justAvailableBooks){
-                    String bookInfo = this.items.indexOf(item) + Book.infoSeparator + item.getInfo() + "\n";
+                if (!item.getIsCheckOut() == justAvailableItems){
+                    String bookInfo = this.items.indexOf(item) + RentItem.infoSeparator + item.getInfo() + "\n";
                     itemList.append(bookInfo);
                 }
             }
@@ -32,11 +32,11 @@ public class RentItemService {
         return itemList.toString();
     }
 
-    public void checkOutBook(int index) throws RentItemException {
+    public void checkOutItem(int index) throws RentItemException {
         this.items.get(index).setIsCheckOut(true);
     }
 
-    public void checkInBook(int index) throws RentItemException {
+    public void checkInItem(int index) throws RentItemException {
         this.items.get(index).setIsCheckOut(false);
     }
 

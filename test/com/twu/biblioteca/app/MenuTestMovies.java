@@ -1,11 +1,8 @@
 package com.twu.biblioteca.app;
 
-import com.twu.biblioteca.library.book.Book;
 import com.twu.biblioteca.library.movie.Movie;
-import com.twu.biblioteca.library.rent.RentItemException;
 import com.twu.biblioteca.library.rent.RentItemService;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -48,7 +44,7 @@ public class MenuTestMovies {
         this.rentMovieService.addItem(movie);
         this.menu = new Menu(this.rentBookService, this.rentMovieService, this.bufferedReader);
         String totalMessage = Menu.generalMenu + Menu.availableBooksMessage +
-                this.rentItemService.getBookList(true) + Menu.generalMenu + Menu.leavingMessage;
+                this.rentMovieService.getItemList(true) + Menu.generalMenu + Menu.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
