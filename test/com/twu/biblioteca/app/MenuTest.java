@@ -125,6 +125,7 @@ public class MenuTest {
         assertThat( this.byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
 
     }
+
     @Test
     public void shouldShowLeavingMessageWhenInsertingqonConsole() throws IOException{
         // Arrange
@@ -143,19 +144,6 @@ public class MenuTest {
 
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
-
-    }
-
-    @Test
-    public void shouldShowNotRecognizedOptionWhenSelectingOtherOption(){
-        // Arrange
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
-
-        // Act
-        menu.executeUserSelectedOption("5");
-
-        // Verifying
-        assertThat( this.byteArrayOutputStream.toString(), is(Menu.invalidOptionMessage));
 
     }
 

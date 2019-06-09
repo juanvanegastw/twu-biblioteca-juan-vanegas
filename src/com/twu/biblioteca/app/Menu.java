@@ -18,6 +18,8 @@ class Menu {
             "Insert \"2\" to show movie list \n" +
             "Insert \"3\" to check out a book \n" +
             "Insert \"4\" to return a book\n" +
+            "Insert \"5\" to check out a movie \n" +
+            "Insert \"6\" to return a movie\n" +
             "Insert \"q\" to quit \n" +
             "Insert and press Enter:\n";
     protected static String leavingMessage = "Thanks for using Biblioteca";
@@ -61,6 +63,12 @@ class Menu {
                 break;
             case "4":
                 this.bookMenuService.startUserInteractionToCheckIn();
+                break;
+            case "5":
+                this.movieMenuService.startUserInteractionToCheckOut();
+                break;
+            case "6":
+                this.movieMenuService.startUserInteractionToCheckIn();
                 break;
             default:
                 showInvalidOptionMessage();
