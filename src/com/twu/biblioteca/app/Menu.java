@@ -23,6 +23,7 @@ class Menu {
             "Insert \"4\" to return a book\n" +
             "Insert \"5\" to check out a movie \n" +
             "Insert \"6\" to return a movie\n" +
+            "Insert \"l\" to log out \n" +
             "Insert \"q\" to quit \n" +
             "Insert and press Enter:\n";
     protected static String leavingMessage = "Thanks for using Biblioteca";
@@ -63,10 +64,20 @@ class Menu {
                 programMustContinue = false;
                 break;
             case "3":
-                this.bookMenuService.startUserInteractionToCheckOut(this.user);
+                if (this.user == null){
+                    this.user = getLibraryUserFromUser();
+                }
+                if(this.user != null) {
+                    this.bookMenuService.startUserInteractionToCheckOut(this.user);
+                }
                 break;
             case "4":
-                this.bookMenuService.startUserInteractionToCheckIn();
+                if (this.user == null){
+                    this.user = getLibraryUserFromUser();
+                }
+                if(this.user != null) {
+                    this.bookMenuService.startUserInteractionToCheckIn();
+                }
                 break;
             case "5":
                 this.movieMenuService.startUserInteractionToCheckOut(this.user);
@@ -74,6 +85,8 @@ class Menu {
             case "6":
                 this.movieMenuService.startUserInteractionToCheckIn();
                 break;
+            case "l":
+                this.user = null;
             default:
                 showInvalidOptionMessage();
         }
@@ -113,12 +126,10 @@ class Menu {
             startMenuServices();
     }
 
-    public void startLibraryWithLogIn(){
-        this.user = getLibraryUserFromUser();
-        if(this.user != null) {
-            showWelcomeMessage();
-            startMenuServices();
-        }
+    public void startLibrary(){
+        showWelcomeMessage();
+        startMenuServices();
+
     }
 
     protected void showWelcomeMessage(){

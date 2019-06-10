@@ -7,6 +7,6 @@ public class BibliotecaApp {
         Menu menu = new Menu(DataBuilder.generateBooksRentService(), DataBuilder.generateMoviesRentService(), null);
         LogIn logIn = DataBuilder.generateLogIn();
         menu.setLogIn(logIn);
-        menu.startLibraryWithLogIn();
+        menu.startLibrary();
     }
 }
