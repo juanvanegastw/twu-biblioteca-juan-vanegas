@@ -89,7 +89,7 @@ public class MenuService {
             showCheckInUnsuccessfullyMessage();
         }
         catch (Exception exception){
-            this.menu.showGeneralExceptionMessage(exception);
+            Menu.showGeneralExceptionMessage(exception);
         }
     }
 

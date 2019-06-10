@@ -1,11 +1,12 @@
 package com.twu.biblioteca.app;
-import java.io.IOException;
+import com.twu.biblioteca.library.user.UserException;
 
 
 public class BibliotecaApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws UserException {
         Menu menu = new Menu(DataBuilder.generateBooksRentService(), DataBuilder.generateMoviesRentService(), null);
-        menu.showWelcomeMessage();
-        menu.startUserInteraction();
+        LogIn logIn = DataBuilder.generateLogIn();
+        menu.setLogIn(logIn);
+        menu.startLibraryWithLogIn();
     }
 }

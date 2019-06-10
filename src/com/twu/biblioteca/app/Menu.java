@@ -1,6 +1,7 @@
 package com.twu.biblioteca.app;
 
 import com.twu.biblioteca.library.rent.RentItemService;
+import com.twu.biblioteca.library.user.LibraryUser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,6 +11,7 @@ class Menu {
     private BufferedReader bufferedReader;
     private MenuService bookMenuService;
     private MenuService movieMenuService;
+    private LogIn logIn;
 
     protected static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
 
@@ -31,8 +33,12 @@ class Menu {
         this.bufferedReader = (reader==null) ? new BufferedReader(new InputStreamReader(System.in)): reader;
         this.bookMenuService = new MenuService(this, "book", rentBookService);
         this.movieMenuService = new MenuService(this, "movie", rentMovieService);
+        this.logIn = null;
     }
 
+    public void setLogIn(LogIn logIn){
+        this.logIn = logIn;
+    }
     protected void showGeneralMenu(){
         System.out.print(generalMenu);
     }
@@ -41,9 +47,6 @@ class Menu {
         System.out.print(invalidOptionMessage);
     }
 
-    public void showTheListOfItems(MenuService menuService, boolean justAvailable){
-        menuService.showTheListOfItems(justAvailable);
-    }
 
     protected boolean executeUserSelectedOption(String option){
         boolean programMustContinue = true;
@@ -80,9 +83,9 @@ class Menu {
         System.out.print(leavingMessage);
     }
 
-    protected String readOptionSelected(){
+    static String readUserInput(BufferedReader bufferedReader){
         try {
-            return this.bufferedReader.readLine();
+            return bufferedReader.readLine();
         }
         catch (Exception exception){
             showGeneralExceptionMessage(exception);
@@ -90,11 +93,30 @@ class Menu {
         }
     }
 
-    protected void startUserInteraction(){
+    protected String readOptionSelected(){
+        return readUserInput(this.bufferedReader);
+
+    }
+
+    private LibraryUser getLibraryUserFromUser(){
+        if (logIn == null){
+            return null;
+        }
+        return logIn.startLogInInteraction();
+
+    }
+    protected void startMenuServices(){
         showGeneralMenu();
         boolean programMustContinue = executeUserSelectedOption(readOptionSelected());
-        if(programMustContinue)
-            startUserInteraction();
+        if (programMustContinue)
+            startMenuServices();
+    }
+
+    public void startLibraryWithLogIn(){
+        if(getLibraryUserFromUser() != null) {
+            showWelcomeMessage();
+            startMenuServices();
+        }
     }
 
     protected void showWelcomeMessage(){
@@ -102,7 +124,8 @@ class Menu {
     }
 
 
-    protected void showGeneralExceptionMessage(Exception exception){
+    static void showGeneralExceptionMessage(Exception exception){
         System.out.print(generalExceptionMessage + exception.toString());
     }
+
 }

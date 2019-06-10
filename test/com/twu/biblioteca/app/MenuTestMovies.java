@@ -50,7 +50,7 @@ public class MenuTestMovies {
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
-        menu.startUserInteraction();
+        menu.startMenuServices();
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
@@ -71,7 +71,7 @@ public class MenuTestMovies {
         String secondMessage = String.format(MenuService.selectItemMessage, "movie");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(this.byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -88,7 +88,7 @@ public class MenuTestMovies {
         this.menu = new Menu(this.rentBookService,this.rentMovieService, bufferedReader);
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(this.firstMovie.getIsCheckOut(), is(true));
@@ -106,7 +106,7 @@ public class MenuTestMovies {
         String secondMessage = String.format(MenuService.selectItemMessage, "movie")  + String.format(MenuService.checkoutSuccessfullyMessage, "movie");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -125,7 +125,7 @@ public class MenuTestMovies {
 
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -143,7 +143,7 @@ public class MenuTestMovies {
         String secondMessage = String.format(MenuService.selectItemMessage, "movie") + String.format(MenuService.checkoutUnsuccessfullyMessage, "movie");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -164,7 +164,7 @@ public class MenuTestMovies {
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -180,7 +180,7 @@ public class MenuTestMovies {
         this.menu = new Menu(this.rentMovieService,this.rentMovieService, bufferedReader);
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(this.firstMovie.getIsCheckOut(), is(false));
@@ -200,7 +200,7 @@ public class MenuTestMovies {
 
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -218,7 +218,7 @@ public class MenuTestMovies {
         String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie") + String.format(MenuService.checkInUnsuccessfullyMessage, "movie");
 
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifyin
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -236,7 +236,7 @@ public class MenuTestMovies {
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie") + String.format(MenuService.checkInUnsuccessfullyMessage, "movie");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));

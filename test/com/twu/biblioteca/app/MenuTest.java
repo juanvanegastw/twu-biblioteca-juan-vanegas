@@ -4,6 +4,8 @@ import com.twu.biblioteca.library.book.Book;
 import com.twu.biblioteca.library.rent.RentItem;
 import com.twu.biblioteca.library.rent.RentItemService;
 import com.twu.biblioteca.library.rent.RentItemException;
+import com.twu.biblioteca.library.user.LibraryUser;
+import com.twu.biblioteca.library.user.UserException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -122,7 +124,7 @@ public class MenuTest {
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
-        menu.startUserInteraction();
+        menu.startMenuServices();
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
@@ -142,7 +144,7 @@ public class MenuTest {
         // Act
 
         when(bufferedReader.readLine()).thenReturn("q");
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
@@ -160,7 +162,7 @@ public class MenuTest {
 
         // Act
 
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
@@ -179,7 +181,7 @@ public class MenuTest {
         String totalMessage = firstlMessage + secondMessage;
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
@@ -200,7 +202,7 @@ public class MenuTest {
         String secondMessage = String.format(MenuService.selectItemMessage, "book");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(this.byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -217,7 +219,7 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(this.firstBook.getIsCheckOut(), is(true));
@@ -236,7 +238,7 @@ public class MenuTest {
 
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -255,7 +257,7 @@ public class MenuTest {
 
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -274,7 +276,7 @@ public class MenuTest {
 
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -295,7 +297,7 @@ public class MenuTest {
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -311,7 +313,7 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(this.firstBook.getIsCheckOut(), is(false));
@@ -331,7 +333,7 @@ public class MenuTest {
 
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -349,7 +351,7 @@ public class MenuTest {
         String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "book") + this.rentItemService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
 
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifyin
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
@@ -367,10 +369,37 @@ public class MenuTest {
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
 
         // Act
-        this.menu.startUserInteraction();
+        this.menu.startMenuServices();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(firstMessage + secondMessage));
 
     }
+
+    @Test
+    public void shouldShowSuccessfulLoginWhenInsertingCorrectPassword() throws IOException, UserException {
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("111-1111").thenReturn("password1").thenReturn("q");
+        this.rentItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
+        LogIn logIn= new LogIn(bufferedReader);
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "password1");
+        logIn.addValidUser(firstLibraryUser);
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        logIn.addValidUser(secondLibraryUser);
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        logIn.addValidUser(thirdLibraryUser);
+        this.menu.setLogIn(logIn);
+
+
+        // Act
+        this.menu.startLibraryWithLogIn();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(Menu.welcomeMessage));
+
+    }
+
+
 }
