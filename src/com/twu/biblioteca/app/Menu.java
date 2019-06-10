@@ -16,6 +16,20 @@ class Menu {
 
     protected static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
 
+    protected static String userInfoOption = "Insert \"p\" to see the user profile \n";
+
+    protected static String userInfoMessage = "Your data is:\n";
+
+    private String getMenu(){
+        if(this.user != null){
+            return generalMenu + userInfoOption + selectOptionOption;
+        }
+        else
+        {
+            return generalMenu + selectOptionOption;
+        }
+    }
+
     protected static String generalMenu = "\nSelect an option\n" +
             "Insert \"1\" to show book list \n" +
             "Insert \"2\" to show movie list \n" +
@@ -24,8 +38,9 @@ class Menu {
             "Insert \"5\" to check out a movie \n" +
             "Insert \"6\" to return a movie\n" +
             "Insert \"l\" to log out \n" +
-            "Insert \"q\" to quit \n" +
-            "Insert and press Enter:\n";
+            "Insert \"q\" to quit \n";
+    protected static String selectOptionOption = "Insert and press Enter:\n";
+
     protected static String leavingMessage = "Thanks for using Biblioteca";
     protected static String invalidOptionMessage = "Please select a valid option!\n";
     protected static String generalExceptionMessage = "A error has happened and has thrown the next Exception:\n";
@@ -42,14 +57,16 @@ class Menu {
         this.logIn = logIn;
     }
     protected void showGeneralMenu(){
-        System.out.print(generalMenu);
+        System.out.print(getMenu());
     }
 
     private void showInvalidOptionMessage(){
         System.out.print(invalidOptionMessage);
     }
 
-
+    private void showLoggedUserInfo(){
+        System.out.print(userInfoMessage + this.user.getUserInfo() + "\n");
+    }
     protected boolean executeUserSelectedOption(String option){
         boolean programMustContinue = true;
         switch (option){
@@ -87,6 +104,14 @@ class Menu {
                 break;
             case "l":
                 this.user = null;
+            case "p":
+                if(this.user == null){
+                    showInvalidOptionMessage();
+                }
+                else {
+                    showLoggedUserInfo();
+                }
+                break;
             default:
                 showInvalidOptionMessage();
         }

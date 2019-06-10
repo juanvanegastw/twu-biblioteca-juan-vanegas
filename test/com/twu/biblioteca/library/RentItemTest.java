@@ -21,7 +21,7 @@ public class RentItemTest {
     @Before
     public void setUp() throws UserException {
         this.rentItem = new RentItem(new Book("I Robot", 1959, "Isaac Asimov"));
-        this.user = new LibraryUser("111-1111", "password");
+        this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
     }
 
     @Test

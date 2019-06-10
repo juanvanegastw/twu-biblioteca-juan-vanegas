@@ -35,7 +35,7 @@ public class MenuTestMovies {
         System.setOut(new PrintStream(this.byteArrayOutputStream));
         this.bufferedReader = mock(BufferedReader.class);
         this.firstMovie = new RentItem(new Movie("I Robot", 2016, "Director", 5));
-        this.user = new LibraryUser("111-1111", "password");
+        this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
 
     }
 
@@ -50,8 +50,8 @@ public class MenuTestMovies {
         when(this.bufferedReader.readLine()).thenReturn("2").thenReturn("q");
         this.rentMovieService.addItem(this.firstMovie);
         this.menu = new Menu(this.rentBookService, this.rentMovieService, this.bufferedReader);
-        String totalMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "movie") +
-                this.rentMovieService.getItemList(true) + Menu.generalMenu + Menu.leavingMessage;
+        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "movie") +
+                this.rentMovieService.getItemList(true) + Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
@@ -72,7 +72,7 @@ public class MenuTestMovies {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("5").thenReturn("x").thenReturn("q");
         this.menu = new Menu(this.rentBookService, this.rentMovieService,bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "movie") + this.rentMovieService.getItemList(true);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "movie") + this.rentMovieService.getItemList(true);
         String secondMessage = String.format(MenuService.selectItemMessage, "movie");
 
         // Act
@@ -107,7 +107,7 @@ public class MenuTestMovies {
         when((bufferedReader.readLine())).thenReturn("5").thenReturn("0").thenReturn("q");
         this.rentMovieService.addItem(this.firstMovie);
         this.menu = new Menu(this.rentBookService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "movie") + this.rentMovieService.getItemList(true);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "movie") + this.rentMovieService.getItemList(true);
         String secondMessage = String.format(MenuService.selectItemMessage, "movie")  + String.format(MenuService.checkoutSuccessfullyMessage, "movie");
 
         // Act
@@ -125,7 +125,7 @@ public class MenuTestMovies {
         when((bufferedReader.readLine())).thenReturn("5").thenReturn("1").thenReturn("q");
         this.rentMovieService.addItem(this.firstMovie);
         this.menu = new Menu(this.rentMovieService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "movie") + this.rentMovieService.getItemList(true);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "movie") + this.rentMovieService.getItemList(true);
         String secondMessage = String.format(MenuService.selectItemMessage, "movie") + String.format(MenuService.checkoutUnsuccessfullyMessage, "movie");
 
 
@@ -144,7 +144,7 @@ public class MenuTestMovies {
         when((bufferedReader.readLine())).thenReturn("5").thenReturn("x").thenReturn("q");
         this.rentMovieService.addItem(this.firstMovie);
         this.menu = new Menu(this.rentMovieService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "movie")+ this.rentMovieService.getItemList(true);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "movie")+ this.rentMovieService.getItemList(true);
         String secondMessage = String.format(MenuService.selectItemMessage, "movie") + String.format(MenuService.checkoutUnsuccessfullyMessage, "movie");
 
         // Act
@@ -165,7 +165,7 @@ public class MenuTestMovies {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("6").thenReturn("x").thenReturn("q");
         this.menu = new Menu(this.rentMovieService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie");
 
         // Act
@@ -200,7 +200,7 @@ public class MenuTestMovies {
         this.rentMovieService.addItem(this.firstMovie);
         this.rentMovieService.checkOutItem(0, user);
         this.menu = new Menu(this.rentBookService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie") + String.format(MenuService.checkInSuccessfullyMessage, "movie");
 
 
@@ -220,7 +220,7 @@ public class MenuTestMovies {
 
         this.rentMovieService.addItem(this.firstMovie);
         this.menu = new Menu(this.rentBookService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie") + String.format(MenuService.checkInUnsuccessfullyMessage, "movie");
 
         this.menu.startMenuServices();
@@ -237,7 +237,7 @@ public class MenuTestMovies {
         when((bufferedReader.readLine())).thenReturn("6").thenReturn("1").thenReturn("q");
         this.rentMovieService.addItem(this.firstMovie);
         this.menu = new Menu(this.rentBookService,this.rentMovieService, bufferedReader);
-        String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie") + String.format(MenuService.checkInUnsuccessfullyMessage, "movie");
 
         // Act

@@ -27,11 +27,11 @@ public class LogInTest {
     }
 
     private void addLogInUsers(LogIn logIn) throws UserException{
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "password1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "password1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
     }
     @Test

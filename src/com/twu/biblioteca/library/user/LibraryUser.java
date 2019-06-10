@@ -3,12 +3,19 @@ package com.twu.biblioteca.library.user;
 public class LibraryUser {
     private String libraryNumber;
     private String password;
-    public LibraryUser(String libraryNumber, String password) throws UserException{
+    private String name;
+    private String email;
+    private String phoneNumber;
+
+    public LibraryUser(String libraryNumber, String password, String name, String email, String phoneNumber) throws UserException{
         if (!isValidLibraryNumber(libraryNumber)){
             throw new UserException();
         }
         this.libraryNumber = libraryNumber;
         this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
 
     }
     private boolean isValidLibraryNumber(String libraryNumber){
@@ -35,4 +42,7 @@ public class LibraryUser {
         return this.libraryNumber;
     }
 
+    public String getUserInfo(){
+        return String.join(" ", new String[]{"Name:", this.name, "Email:", this.email, "Phone Number:", this.phoneNumber});
+    }
 }

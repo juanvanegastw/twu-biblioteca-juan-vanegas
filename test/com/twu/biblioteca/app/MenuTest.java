@@ -31,7 +31,7 @@ public class MenuTest {
     public void setUp() throws UserException{
         System.setOut(new PrintStream(this.byteArrayOutputStream));
         this.firstBook = new RentItem(new Book("First Book", 1992, "First Writer"));
-        this.user = new LibraryUser("111-1111", "password");
+        this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
 
 
     }
@@ -80,7 +80,7 @@ public class MenuTest {
         this.menu.showGeneralMenu();
 
         // Verifying
-        assertThat(this.byteArrayOutputStream.toString(), is(Menu.generalMenu));
+        assertThat(this.byteArrayOutputStream.toString(), containsString(Menu.generalMenu));
 
     }
 
@@ -120,15 +120,14 @@ public class MenuTest {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
         this.rentItemService.addItem(this.firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String totalMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") +
-                this.rentItemService.getItemList(true) + Menu.generalMenu + Menu.leavingMessage;
-        Integer messageLinesNumber = totalMessage.split("\n").length;
+        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "book") +
+                this.rentItemService.getItemList(true) + Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
 
         // Act
         menu.startMenuServices();
 
         // Verifying
-        assertThat( this.byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
+        assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
 
     }
 
@@ -139,7 +138,7 @@ public class MenuTest {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
         this.rentItemService.addItem(this.firstBook);
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.leavingMessage;
+        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
@@ -158,8 +157,8 @@ public class MenuTest {
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("Another").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.invalidOptionMessage
-                + Menu.generalMenu + Menu.leavingMessage;
+        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.invalidOptionMessage
+                + Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
 
         // Act
 
@@ -177,8 +176,8 @@ public class MenuTest {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
 
-        String firstlMessage = Menu.generalMenu + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
-        String secondMessage = Menu.generalMenu + Menu.leavingMessage;
+        String firstlMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
+        String secondMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
         String totalMessage = firstlMessage + secondMessage;
 
         // Act
@@ -201,11 +200,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
         String expected = String.format(MenuService.selectItemMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
         // Act
@@ -225,11 +224,11 @@ public class MenuTest {
         this.rentItemService.addItem(this.firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
         // Act
@@ -249,11 +248,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String expected = String.format(MenuService.selectItemMessage, "book")  + String.format(MenuService.checkoutSuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
@@ -274,11 +273,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String expected = String.format(MenuService.selectItemMessage, "book") + String.format(MenuService.checkoutUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
@@ -299,11 +298,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String expected = String.format(MenuService.selectItemMessage, "book") + String.format(MenuService.checkoutUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
@@ -327,11 +326,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
         String expected = String.format(MenuService.selectItemToReturnMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
         // Act
@@ -369,11 +368,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String expected = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInSuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
@@ -395,11 +394,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String expected = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
         // Act
@@ -419,11 +418,11 @@ public class MenuTest {
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String expected = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
         // Act
@@ -442,11 +441,11 @@ public class MenuTest {
         this.rentItemService.addItem(this.firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         LogIn logIn= new LogIn(bufferedReader);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
+        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
         logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3");
+        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
@@ -456,6 +455,27 @@ public class MenuTest {
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(Menu.welcomeMessage));
+
+    }
+
+    @Test
+    public void shouldShowUserInfoWhenLoginIntoTheApp() throws IOException, UserException {
+        // Arrange
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("p").thenReturn("q");
+        this.rentItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
+        LogIn logIn= new LogIn(bufferedReader);
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
+        logIn.addValidUser(firstLibraryUser);
+        this.menu.setLogIn(logIn);
+
+
+        // Act
+        this.menu.startLibrary();
+
+        // Verifying
+        assertThat(byteArrayOutputStream.toString(), containsString(Menu.userInfoMessage));
 
     }
 

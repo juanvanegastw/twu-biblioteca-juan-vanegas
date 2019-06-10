@@ -23,7 +23,7 @@ public class RentItemServiceTest {
         this.firstBook = new RentItem(new Book("First Book", 1952, "First Writer"));
         this.secondBook = new RentItem(new Book("Second Book", 1952, "First Writer"));
         this.thirdBook = new RentItem( new Book("Third Book", 1952, "First Writer"));
-        this.user = new LibraryUser("111-1111", "password");
+        this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
 
     }
     @Test
