@@ -2,6 +2,7 @@ package com.twu.biblioteca.app;
 
 import com.twu.biblioteca.library.rent.RentItemException;
 import com.twu.biblioteca.library.rent.RentItemService;
+import com.twu.biblioteca.library.user.LibraryUser;
 
 public class MenuService {
     private String itemName;
@@ -51,11 +52,11 @@ public class MenuService {
         System.out.print(outMessage);
     }
 
-    protected void checkOutAItem() {
+    protected void checkOutAItem(LibraryUser user) {
         try {
             String itemIndex = this.menu.readOptionSelected();
             int index = Integer.valueOf(itemIndex);
-            this.rentItemService.checkOutItem(index);
+            this.rentItemService.checkOutItem(index, user);
             showCheckoutSuccessfullyMessage();
         }
         catch (NumberFormatException | IndexOutOfBoundsException| RentItemException exception) {
@@ -66,10 +67,10 @@ public class MenuService {
         }
     }
 
-    protected void startUserInteractionToCheckOut(){
+    protected void startUserInteractionToCheckOut(LibraryUser user){
         this.showTheListOfItems(true);
         this.showSelectItemMessage();
-        this.checkOutAItem();
+        this.checkOutAItem(user);
     }
 
     protected void startUserInteractionToCheckIn(){

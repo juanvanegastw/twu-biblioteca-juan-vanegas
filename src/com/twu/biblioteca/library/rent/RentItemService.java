@@ -2,6 +2,7 @@ package com.twu.biblioteca.library.rent;
 
 
 import com.twu.biblioteca.library.book.Book;
+import com.twu.biblioteca.library.user.LibraryUser;
 
 import java.util.ArrayList;
 
@@ -32,12 +33,12 @@ public class RentItemService {
         return itemList.toString();
     }
 
-    public void checkOutItem(int index) throws RentItemException {
-        this.items.get(index).setIsCheckOut(true);
+    public void checkOutItem(int index, LibraryUser user) throws RentItemException {
+        this.items.get(index).setIsCheckOut(true, user);
     }
 
     public void checkInItem(int index) throws RentItemException {
-        this.items.get(index).setIsCheckOut(false);
+        this.items.get(index).setIsCheckOut(false, null);
     }
 
 }

@@ -4,6 +4,8 @@ import com.twu.biblioteca.library.movie.Movie;
 import com.twu.biblioteca.library.rent.RentItem;
 import com.twu.biblioteca.library.rent.RentItemException;
 import com.twu.biblioteca.library.rent.RentItemService;
+import com.twu.biblioteca.library.user.LibraryUser;
+import com.twu.biblioteca.library.user.UserException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +29,14 @@ public class MenuTestMovies {
     private BufferedReader bufferedReader;
     private RentItemService rentBookService = DataBuilder.generateBooksRentService();
     private RentItem firstMovie;
+    private LibraryUser user;
     @Before
-    public void setUp(){
+    public void setUp() throws UserException {
         System.setOut(new PrintStream(this.byteArrayOutputStream));
         this.bufferedReader = mock(BufferedReader.class);
         this.firstMovie = new RentItem(new Movie("I Robot", 2016, "Director", 5));
+        this.user = new LibraryUser("111-1111", "password");
+
     }
 
     @After
@@ -193,7 +198,7 @@ public class MenuTestMovies {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("6").thenReturn("0").thenReturn("q");
         this.rentMovieService.addItem(this.firstMovie);
-        this.rentMovieService.checkOutItem(0);
+        this.rentMovieService.checkOutItem(0, user);
         this.menu = new Menu(this.rentBookService,this.rentMovieService, bufferedReader);
         String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "movie") + this.rentMovieService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "movie") + String.format(MenuService.checkInSuccessfullyMessage, "movie");

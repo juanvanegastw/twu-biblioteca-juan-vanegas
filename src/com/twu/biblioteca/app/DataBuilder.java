@@ -29,7 +29,7 @@ class DataBuilder {
     static protected LogIn generateLogIn() throws UserException {
 
         LogIn logIn= new LogIn(null);
-        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "password1");
+        LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1");
         logIn.addValidUser(firstLibraryUser);
         LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2");
         logIn.addValidUser(secondLibraryUser);

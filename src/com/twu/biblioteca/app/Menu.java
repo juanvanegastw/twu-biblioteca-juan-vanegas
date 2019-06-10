@@ -12,6 +12,7 @@ class Menu {
     private MenuService bookMenuService;
     private MenuService movieMenuService;
     private LogIn logIn;
+    private LibraryUser user;
 
     protected static String welcomeMessage = "Welcome to Biblioteca. You one-stop-shop for great book titles in Bangalore.\n\n";
 
@@ -62,13 +63,13 @@ class Menu {
                 programMustContinue = false;
                 break;
             case "3":
-                this.bookMenuService.startUserInteractionToCheckOut();
+                this.bookMenuService.startUserInteractionToCheckOut(this.user);
                 break;
             case "4":
                 this.bookMenuService.startUserInteractionToCheckIn();
                 break;
             case "5":
-                this.movieMenuService.startUserInteractionToCheckOut();
+                this.movieMenuService.startUserInteractionToCheckOut(this.user);
                 break;
             case "6":
                 this.movieMenuService.startUserInteractionToCheckIn();
@@ -113,7 +114,8 @@ class Menu {
     }
 
     public void startLibraryWithLogIn(){
-        if(getLibraryUserFromUser() != null) {
+        this.user = getLibraryUserFromUser();
+        if(this.user != null) {
             showWelcomeMessage();
             startMenuServices();
         }

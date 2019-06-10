@@ -4,6 +4,8 @@ import com.twu.biblioteca.library.book.Book;
 import com.twu.biblioteca.library.rent.RentItem;
 import com.twu.biblioteca.library.rent.RentItemException;
 import com.twu.biblioteca.library.rent.RentItemService;
+import com.twu.biblioteca.library.user.LibraryUser;
+import com.twu.biblioteca.library.user.UserException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,12 +17,14 @@ public class RentItemServiceTest {
     RentItem firstBook;
     RentItem secondBook ;
     RentItem thirdBook ;
-
+    LibraryUser user;
     @Before
-    public void setUp(){
+    public void setUp() throws UserException {
         this.firstBook = new RentItem(new Book("First Book", 1952, "First Writer"));
         this.secondBook = new RentItem(new Book("Second Book", 1952, "First Writer"));
         this.thirdBook = new RentItem( new Book("Third Book", 1952, "First Writer"));
+        this.user = new LibraryUser("111-1111", "password");
+
     }
     @Test
     public void shouldAddABook(){
@@ -91,7 +95,7 @@ public class RentItemServiceTest {
         rentItemService.addItem(this.secondBook);
 
         // Act
-        rentItemService.checkOutItem(1);
+        rentItemService.checkOutItem(1, user);
 
         // Assert
         assertThat(this.secondBook.getIsCheckOut(), is(true));
@@ -105,7 +109,7 @@ public class RentItemServiceTest {
 
         //Act
 
-        this.firstBook.setIsCheckOut(true);
+        this.firstBook.setIsCheckOut(true, user);
 
         // Assert
         myRentItemService.addItem(this.firstBook);
@@ -125,7 +129,7 @@ public class RentItemServiceTest {
         rentItemService.addItem(this.secondBook);
 
         // Act
-        rentItemService.checkOutItem(1);
+        rentItemService.checkOutItem(1, user);
         rentItemService.checkInItem(1);
 
         // Assert
@@ -142,13 +146,16 @@ public class RentItemServiceTest {
         myRentItemService.addItem(this.thirdBook);
 
         // Act
-        myRentItemService.checkOutItem(0);
-        myRentItemService.checkOutItem(1);
+        myRentItemService.checkOutItem(0, user);
+        myRentItemService.checkOutItem(1, user);
         String OneBookList = myRentItemService.getItemList(false);
 
         // Assert
-        assertThat(OneBookList, is("0,First Book,First Writer,1952\n" +
-                "1,Second Book,First Writer,1952\n"));
+        assertThat(OneBookList,
+                allOf(
+                        containsString("0,First Book,First Writer,1952,Reserved by"),
+                        containsString("1,Second Book,First Writer,1952,Reserved by")
+                ));
     }
 
 }

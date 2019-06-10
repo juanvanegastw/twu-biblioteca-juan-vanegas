@@ -24,13 +24,14 @@ public class MenuTest {
     private RentItemService rentItemService = new RentItemService("Biblioteca");
     private RentItemService rentMovieService = DataBuilder.generateMoviesRentService();
     private RentItem firstBook;
-
+    private LibraryUser user;
     private Menu menu;
 
     @Before
-    public void setUp(){
+    public void setUp() throws UserException{
         System.setOut(new PrintStream(this.byteArrayOutputStream));
         this.firstBook = new RentItem(new Book("First Book", 1992, "First Writer"));
+        this.user = new LibraryUser("111-1111", "password");
 
 
     }
@@ -305,12 +306,13 @@ public class MenuTest {
     }
 
     @Test
-    public void shouldCheckOutBookWhenSelecting3then0then4AndThen0() throws IOException{
+    public void shouldCheckOutBookWhenSelecting3then0then4AndThen0() throws IOException, UserException{
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("0").thenReturn("4").thenReturn("0").thenReturn("q");
         this.rentItemService.addItem(this.firstBook);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
+
 
         // Act
         this.menu.startMenuServices();
@@ -326,7 +328,7 @@ public class MenuTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("0").thenReturn("q");
         this.rentItemService.addItem(this.firstBook);
-        this.rentItemService.checkOutItem(0);
+        this.rentItemService.checkOutItem(0, user);
         this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
         String firstMessage = Menu.generalMenu + String.format(MenuService.reservedItemsMessage, "book") + this.rentItemService.getItemList(false);
         String secondMessage = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInSuccessfullyMessage, "book");
