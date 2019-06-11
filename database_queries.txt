@@ -1,0 +1,80 @@
+1. Who checked out the book 'The Hobbit’?
+SELECT * FROM  member WHERE id = (SELECT member_id FROM checkout_item WHERE book_id = (SELECT id FROM book WHERE title ='The Hobbit'));
+
+id|name
+1|Anand Beck
+
+2.How many people have not checked out anything?
+SELECT * FROM member WHERE id NOT IN (SELECT member_id FROM checkout_item);
+
+id|name
+3|Sneha Wang
+4|Judy Li
+5|Anand Huang
+9|Raquel Singh
+10|Mauro Smith
+11|Raquel Listov
+12|Tanuj Fowler
+13|Frank Listov
+14|Alok Jain
+15|Alok Knuth
+16|Frank Beck
+17|Scott Huang
+18|Anand Schneider
+19|Julian Evans
+20|Mauro Singh
+21|Scott Knuth
+22|Faris Wang
+23|Anand Smith
+24|Frank Singh
+25|Alok Gupta
+26|Mauro Knuth
+27|Frank Wang
+28|Nandini Fowler
+29|Mauro Hunt
+30|Scott Jain
+31|Alok Carmack
+32|Billy Knuth
+33|Tanuj Schneider
+34|Faris Huang
+35|Anand Li
+36|Julian Huang
+37|Julian Schneider
+38|Judy Singh
+39|Nandini Carmack
+40|Tanuj Listov
+41|Naval Hunt
+42|Schweta Jain
+
+3. What books and movies aren't checked out?
+
+SELECT 'Book  ',id,title FROM book WHERE id NOT IN (SELECT book_id FROM checkout_item WHERE book_id IS NOT null) UNION SELECT 'Movie ',id,title FROM movie WHERE id NOT IN (SELECT movie_id FROM checkout_item WHERE movie_id IS NOT null);
+
+item_type|id|title
+Book  |2|Fellowship of the Ring
+Book  |6|1984
+Book  |7|Tom Sawyer
+Book  |8|Catcher in the Rye
+Book  |9|To Kill a Mockingbird
+Book  |10|Domain Driven Design
+Movie |6|Thin Red Line
+Movie |7|Crouching Tiger, Hidden Dragon
+Movie |8|Lawrence of Arabia
+Movie |9|Office Space
+
+4. Add the book 'The Pragmatic Programmer', and add yourself as a member. Check out 'The Pragmatic Programmer'. Use your query from question 1 to verify that you have checked it out. Also, provide the SQL used to update the database.
+
+INSERT INTO book (title) VALUES('The Pragmatic Programmer');
+INSERT INTO member(name) VALUES('Juan Vanegas');
+INSERT INTO checkout_item(book_id,member_id) SELECT B.id, M.id FROM book B, member M WHERE M.name='Juan Vanegas' AND B.title ='The Pragmatic Programmer';
+SELECT * FROM  member WHERE id = (SELECT member_id FROM checkout_item WHERE book_id = (SELECT id FROM book WHERE title ='The Pragmatic Programmer'));
+
+id|name
+43|Juan Vanegas
+
+5.Who has checked out more that 1 item? 
+SELECT M.id AS member_id, M.name, CO.items FROM Member M INNER JOIN (SELECT member_id,count(*) AS items FROM checkout_item GROUP BY member_id) AS CO WHERE M.id=CO.member_id AND  CO.items > 1;
+
+member_id|name|items
+1|Anand Beck|3
+6|Frank Smith|3
