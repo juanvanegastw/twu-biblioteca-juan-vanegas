@@ -18,6 +18,7 @@ public class LibraryUser {
         this.phoneNumber = phoneNumber;
 
     }
+
     private boolean isValidLibraryNumber(String libraryNumber){
         String[] libraryNumberArray = libraryNumber.split("-");
         if (libraryNumberArray.length != 2 || libraryNumberArray[0].length() != 3 || libraryNumberArray[1].length() != 4){
@@ -34,6 +35,9 @@ public class LibraryUser {
         return true;
     }
 
+    /**
+     * Para hacerlo más descriptivo puedes usar insertedPassword en lugar de testingPassword
+     */
     public boolean checkValidPassword(String testingPassword){
         return testingPassword.equals(this.password);
     }

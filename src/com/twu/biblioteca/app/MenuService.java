@@ -8,6 +8,10 @@ public class MenuService {
     private String itemName;
     private RentItemService rentItemService;
     private Menu menu;
+
+    /**
+     * ¿Por qué estos fields y métodos deben ser protected?
+     */
     protected static String selectItemMessage = "\nPlease select the index of the %s you want to Check Out\n";
     protected static String selectItemToReturnMessage = "\nPlease select the index of the %s you want to Return\n";
     protected static String checkoutSuccessfullyMessage = "Thank you! Enjoy the %s\n";
@@ -23,6 +27,9 @@ public class MenuService {
         this.rentItemService = rentItemService;
     }
 
+    /**
+     * Estos métodos sólo se usan en esta clase ¿Cuál es el modificador de acceso que deberían de usar?
+     */
     public void showSelectItemMessage() {
         printMessage(selectItemMessage);
     }
@@ -52,6 +59,9 @@ public class MenuService {
         System.out.print(outMessage);
     }
 
+    /**
+     * Este método sólo se usa en esta clase ¿Por qué es protected?
+     */
     protected void checkOutAItem(LibraryUser user) {
         try {
             String itemIndex = this.menu.readOptionSelected();
@@ -67,18 +77,27 @@ public class MenuService {
         }
     }
 
+    /**
+     * Este método se usa en la clase Menu ¿Por qué es protected?, ¿Cuál es el mofidicador de acceso correcto que debería utilizar?
+     */
     protected void startUserInteractionToCheckOut(LibraryUser user){
         this.showTheListOfItems(true);
         this.showSelectItemMessage();
         this.checkOutAItem(user);
     }
 
+    /**
+     * Este método se usa en la clase Menu ¿Por qué es protected?, ¿Cuál es el mofidicador de acceso correcto que debería utilizar?
+     */
     protected void startUserInteractionToCheckIn(){
         this.showTheListOfItems(false);
         this.showSelectItemToReturnMessage();
         this.checkInAItem();
     }
 
+    /**
+     * Este método sólo se usa en esta clase ¿Por qué es protected?
+     */
     protected void checkInAItem(){
         try {
             String itemIndex = this.menu.readOptionSelected();
@@ -105,6 +124,9 @@ public class MenuService {
         System.out.print(itemList);
     }
 
+    /**
+     * ¿Cuál es el propósito de este método?, ¿Por qué no usar directamente el field rentItemService?
+     */
     protected void showTheListOfItems(boolean justAvailable){
         showTheListOfRentItemService(this.rentItemService, justAvailable);
     }

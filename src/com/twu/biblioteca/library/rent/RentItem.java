@@ -2,8 +2,14 @@ package com.twu.biblioteca.library.rent;
 
 import com.twu.biblioteca.library.user.LibraryUser;
 
+/**
+ * RentItem me suena más a un nombre de método que al de una clase
+ */
 public class RentItem {
     public static String infoSeparator = ",";
+    /**
+     * Por qué RentItemservice accede directamente a este field
+     */
     protected boolean isCheckOut = false;
     private Item item;
     private LibraryUser currentReservingUser;
@@ -11,6 +17,7 @@ public class RentItem {
     public RentItem(Item item){
         this.item = item;
     }
+    
     public void setIsCheckOut(boolean state, LibraryUser user) throws RentItemException {
         if (state && this.isCheckOut )
         {

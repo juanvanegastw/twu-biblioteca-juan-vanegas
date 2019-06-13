@@ -7,16 +7,22 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class LogIn {
+    /**
+     * Cuáles son los modificadores de acceso que derían tener estos fields
+     */
     HashMap<String, LibraryUser> users;
     static String insertLibraryNumberMessage = "Please insert your Library Number\n";
     static String insertPasswordMessage = "Please insert your password\n";
     static String wrongLibraryNumberMessage = "Library Number Not Found\n";
     static String wrongPasswordMessage = "Wrong password\n";
-    private Integer maxAttemptsNumber = 3;
     static String maxAttemptsMessage = "You have exceed the limit of attempts\n";
+
+    private Integer maxAttemptsNumber = 3;
     private BufferedReader bufferedReader;
 
-
+    /**
+     * Cuál es el modificador de acceso que dería tener el constructor
+     */
     LogIn(BufferedReader bufferedReader){
         this.bufferedReader = (bufferedReader==null) ? new BufferedReader(new InputStreamReader(System.in)): bufferedReader;
 
@@ -25,7 +31,6 @@ public class LogIn {
 
     public void addValidUser(LibraryUser libraryUser){
         this.users.put(libraryUser.getLibraryNumber(), libraryUser);
-
     }
 
     private void showInsertLibraryNumberMessage(){
@@ -60,7 +65,6 @@ public class LogIn {
         }
         showMaxAttemptsMessage();
         return null;
-
     }
 
     private LibraryUser startLogInAttempt(){
@@ -77,7 +81,6 @@ public class LogIn {
                 showWrongPasswordMessage();
                 return null;
             }
-
         }
         return user;
     }

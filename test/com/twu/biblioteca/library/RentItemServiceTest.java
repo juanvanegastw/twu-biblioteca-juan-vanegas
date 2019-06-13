@@ -18,14 +18,15 @@ public class RentItemServiceTest {
     RentItem secondBook ;
     RentItem thirdBook ;
     LibraryUser user;
+
     @Before
     public void setUp() throws UserException {
         this.firstBook = new RentItem(new Book("First Book", 1952, "First Writer"));
         this.secondBook = new RentItem(new Book("Second Book", 1952, "First Writer"));
         this.thirdBook = new RentItem( new Book("Third Book", 1952, "First Writer"));
         this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
-
     }
+
     @Test
     public void shouldAddABook(){
         // Arrange
@@ -67,6 +68,10 @@ public class RentItemServiceTest {
     }
 
     @Test
+    /**
+     * Aquí puedes encontrar algunos ejemplos de Comparator con asserts
+     * https://stackoverflow.com/questions/17949752/junit-matcher-for-comparators
+     */
     public void shouldPrintBookIndexInfo(){
         // Arrange
         RentItemService rentItemService = new RentItemService("Biblioteca");
@@ -99,7 +104,6 @@ public class RentItemServiceTest {
 
         // Assert
         assertThat(this.secondBook.getIsCheckOut(), is(true));
-
     }
 
     @Test
@@ -118,7 +122,6 @@ public class RentItemServiceTest {
 
         // Assert
         assertThat(OneBookList, containsString("1,Second Book,First Writer,1952"));
-
     }
 
     @Test
@@ -134,7 +137,6 @@ public class RentItemServiceTest {
 
         // Assert
         assertThat(this.secondBook.getIsCheckOut(), is(false));
-
     }
 
     @Test
@@ -157,5 +159,4 @@ public class RentItemServiceTest {
                         containsString("1,Second Book,First Writer,1952,Reserved by")
                 ));
     }
-
 }

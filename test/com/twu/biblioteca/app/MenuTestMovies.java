@@ -30,13 +30,13 @@ public class MenuTestMovies {
     private RentItemService rentBookService = DataBuilder.generateBooksRentService();
     private RentItem firstMovie;
     private LibraryUser user;
+
     @Before
     public void setUp() throws UserException {
         System.setOut(new PrintStream(this.byteArrayOutputStream));
         this.bufferedReader = mock(BufferedReader.class);
         this.firstMovie = new RentItem(new Movie("I Robot", 2016, "Director", 5));
         this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
-
     }
 
     @After

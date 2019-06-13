@@ -15,6 +15,5 @@ public class Book implements Item {
     public String[] getDataInfo(){
         return new String [] {this.name, this.author.getName(), String.valueOf(this.publicationYear)};
     }
-
 }
 

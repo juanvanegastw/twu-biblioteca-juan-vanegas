@@ -18,6 +18,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * En general para todas las pruebas es importante mantener el mismo estándar de nombrar los nombres de las pruebas, p.ej si vas a usar should todas deberían hacerlo, así como los guiones _
+ */
 public class MenuTest {
 
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -32,8 +35,6 @@ public class MenuTest {
         System.setOut(new PrintStream(this.byteArrayOutputStream));
         this.firstBook = new RentItem(new Book("First Book", 1992, "First Writer"));
         this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
-
-
     }
 
     @After
@@ -46,13 +47,11 @@ public class MenuTest {
         //Setting
         this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
 
-
         //Executing
         this.menu.showWelcomeMessage();
 
         //Verifying
         Assert.assertTrue(this.byteArrayOutputStream.toString().length() > 0);
-
     }
 
     @Test
@@ -60,16 +59,12 @@ public class MenuTest {
         //Setting
         this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
 
-
         //Executing
         this.menu.showWelcomeMessage();
 
         //Verifying
         assertThat(this.byteArrayOutputStream.toString(), is(Menu.welcomeMessage));
-
     }
-
-
 
     @Test
     public void shouldShowTheGeneralMenu(){
@@ -81,10 +76,12 @@ public class MenuTest {
 
         // Verifying
         assertThat(this.byteArrayOutputStream.toString(), containsString(Menu.generalMenu));
-
     }
 
     @Test
+    /**
+     * Es mejor si especificas mejor que es 1 y usualment todos los nombres de pruebas son solo letras p.ej shouldShowTheBookListWhenSelectingOptionOne o shouldShowTheBookListWhenSelectingFirstOption
+     */
     public void shouldShowTheBookListWhenSelecting1(){
         // Arrange
         this.rentItemService.addItem(this.firstBook);
@@ -97,11 +94,13 @@ public class MenuTest {
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
-
     }
 
     @Test
-    public void shouldShowLeavingMessageWhenSelectingq(){
+    /**
+     * El nombre de esta prueba está incompleto, qué estas seleccionando?
+     */
+    public void shouldShowLeavingMessageWhenSelecting(){
         // Arrange
         this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
 
@@ -110,7 +109,6 @@ public class MenuTest {
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString(), is(Menu.leavingMessage));
-
     }
 
     @Test
@@ -128,11 +126,10 @@ public class MenuTest {
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
-
     }
 
     @Test
-    public void shouldShowLeavingMessageWhenInsertingqonConsole() throws IOException{
+    public void shouldShowLeavingMessageWhenInsertingOnConsole() throws IOException{
         // Arrange
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
@@ -142,13 +139,11 @@ public class MenuTest {
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
-
         when(bufferedReader.readLine()).thenReturn("q");
         this.menu.startMenuServices();
 
         // Verifying
         assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
-
     }
 
     @Test
@@ -161,12 +156,10 @@ public class MenuTest {
                 + Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
 
         // Act
-
         this.menu.startMenuServices();
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
-
     }
 
     @Test
@@ -176,16 +169,15 @@ public class MenuTest {
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
         this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
 
-        String firstlMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
+        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
         String secondMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
-        String totalMessage = firstlMessage + secondMessage;
+        String totalMessage = firstMessage + secondMessage;
 
         // Act
         this.menu.startMenuServices();
 
         // Verifying
         assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
-
     }
 
     /*
@@ -212,9 +204,7 @@ public class MenuTest {
 
         // Verifying
         assertThat(this.byteArrayOutputStream.toString(), containsString(expected));
-
     }
-
 
     @Test
     public void shouldCheckOutBookWhenSelecting3AndThen0() throws IOException, UserException{
@@ -261,7 +251,6 @@ public class MenuTest {
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
-
     }
 
     @Test
@@ -286,7 +275,6 @@ public class MenuTest {
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
-
     }
 
     @Test
@@ -355,7 +343,6 @@ public class MenuTest {
 
         // Verifying
         assertThat(this.firstBook.getIsCheckOut(), is(false));
-
     }
 
     @Test

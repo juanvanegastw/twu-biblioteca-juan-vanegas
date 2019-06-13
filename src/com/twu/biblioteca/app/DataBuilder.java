@@ -7,7 +7,10 @@ import com.twu.biblioteca.library.rent.RentItemService;
 import com.twu.biblioteca.library.user.LibraryUser;
 import com.twu.biblioteca.library.user.UserException;
 
-
+/**
+ * ¿Por qué estos métodos son protected?
+ * Sería mejor separar responsabilidades por el tipo de objeto que se esta generando y crear clases específicas para los mismos
+ */
 class DataBuilder {
     static protected RentItemService generateBooksRentService(){
         RentItemService rentItemService = new RentItemService("Biblioteca");
@@ -37,5 +40,4 @@ class DataBuilder {
         logIn.addValidUser(thirdLibraryUser);
         return logIn;
     }
-
 }

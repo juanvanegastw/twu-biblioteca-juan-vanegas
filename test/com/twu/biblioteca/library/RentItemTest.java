@@ -1,4 +1,5 @@
 package com.twu.biblioteca.library;
+
 import com.twu.biblioteca.library.book.Book;
 import com.twu.biblioteca.library.movie.Movie;
 import com.twu.biblioteca.library.rent.RentItem;
@@ -14,10 +15,10 @@ import javax.jws.soap.SOAPBinding;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
-
 public class RentItemTest {
     RentItem rentItem;
     LibraryUser user;
+
     @Before
     public void setUp() throws UserException {
         this.rentItem = new RentItem(new Book("I Robot", 1959, "Isaac Asimov"));
@@ -26,7 +27,6 @@ public class RentItemTest {
 
     @Test
     public void shouldCreateABookWithItsPublicationYearAndAuthor(){
-
         // Act
         String bookInfo = this.rentItem.getInfo();
 
@@ -76,5 +76,4 @@ public class RentItemTest {
         // Assert
         assertThat(this.rentItem.getCurrentReservingUser(), is(this.user));
     }
-
 }

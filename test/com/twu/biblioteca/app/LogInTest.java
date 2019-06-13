@@ -18,12 +18,9 @@ import static org.mockito.Mockito.*;
 public class LogInTest {
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-
     @Before
     public void setUp(){
         System.setOut(new PrintStream(this.byteArrayOutputStream));
-
-
     }
 
     private void addLogInUsers(LogIn logIn) throws UserException{
@@ -34,6 +31,7 @@ public class LogInTest {
         LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
         logIn.addValidUser(thirdLibraryUser);
     }
+
     @Test
     public void shouldAskMeForUserNumberWhenCallingStartLogInInteraction() throws IOException, UserException {
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
@@ -44,10 +42,12 @@ public class LogInTest {
         logIn.startLogInInteraction();
 
         assertThat(this.byteArrayOutputStream.toString(), containsString(LogIn.insertLibraryNumberMessage));
-
     }
 
     @Test
+    /**
+     * Esta prueba tiene el mismo setup y assert que la se arriba cómo pordrías refactorizarlo para eliminar el código duplicado
+     */
     public void shouldAskMeForPasswordAfterInsertingLibraryNumberWhenCallingStartLogInInteraction() throws IOException, UserException{
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("111-1111").thenReturn("password1").thenReturn("q");
@@ -57,10 +57,12 @@ public class LogInTest {
         logIn.startLogInInteraction();
 
         assertThat(this.byteArrayOutputStream.toString(), containsString(LogIn.insertPasswordMessage));
-
     }
 
     @Test
+    /**
+     * Por TheFunction es innecesario, se asume que llamas a una función
+     */
     public void shouldCallTheFunction_readLine_whenCallingStartLogInInteraction() throws IOException, UserException{
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("111-1111").thenReturn("password1");
@@ -80,7 +82,6 @@ public class LogInTest {
         addLogInUsers(logIn);
 
         logIn.startLogInInteraction();
-
 
         assertThat(this.byteArrayOutputStream.toString(), containsString(LogIn.wrongLibraryNumberMessage));
     }
@@ -120,5 +121,4 @@ public class LogInTest {
 
         assertThat(this.byteArrayOutputStream.toString(), containsString(LogIn.maxAttemptsMessage));
     }
-
 }

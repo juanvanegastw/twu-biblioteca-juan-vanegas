@@ -1,9 +1,10 @@
 package com.twu.biblioteca.library.rent;
 
-
+/**
+ * Remover imports innecesarios
+ */
 import com.twu.biblioteca.library.book.Book;
 import com.twu.biblioteca.library.user.LibraryUser;
-
 import java.util.ArrayList;
 
 public class RentItemService {
@@ -40,6 +41,5 @@ public class RentItemService {
     public void checkInItem(int index) throws RentItemException {
         this.items.get(index).setIsCheckOut(false, null);
     }
-
 }
 

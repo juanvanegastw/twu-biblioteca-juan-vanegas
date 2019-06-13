@@ -7,27 +7,26 @@ import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
 
+/**
+ * Los pequetes de pruebas guardan concordancia con todos los paquetes que fueron definidos en tu aplicación
+ */
 public class LibraryUserTest {
     @Test(expected = UserException.class)
     public void shouldReturnExceptionWhenCreatingAUserWithAFormatWithoutHyphen() throws UserException{
         String invalidLibraryUser = "abcd";
         new LibraryUser(invalidLibraryUser, "password", "name", "email", "094");
-
     }
-
 
     @Test(expected = UserException.class)
     public void shouldReturnExceptionWhenCreatingAUserWithAFormatWithLetters() throws UserException{
         String invalidLibraryUser = "abc-abcd";
         new LibraryUser(invalidLibraryUser, "password", "name", "email", "094");
-
     }
 
     @Test(expected = UserException.class)
     public void shouldReturnExceptionWhenCreatingAUserWithAFormatWithTooManyNumbers() throws UserException{
         String invalidLibraryUser = "11111-1111111";
         new LibraryUser(invalidLibraryUser, "password", "name", "email", "094");
-
     }
 
     @Test
@@ -38,7 +37,6 @@ public class LibraryUserTest {
         boolean isValidPassword = libraryUser.checkValidPassword(validPassword);
 
         assertThat(isValidPassword, is(true));
-
     }
 
     @Test
@@ -48,8 +46,5 @@ public class LibraryUserTest {
         String userInfo = libraryUser.getUserInfo();
 
         assertThat(userInfo, is("Name: name Email: email Phone Number: 094"));
-
     }
-
-
 }
