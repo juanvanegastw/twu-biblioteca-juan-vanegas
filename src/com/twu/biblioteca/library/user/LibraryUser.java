@@ -35,11 +35,8 @@ public class LibraryUser {
         return true;
     }
 
-    /**
-     * Para hacerlo más descriptivo puedes usar insertedPassword en lugar de testingPassword
-     */
-    public boolean checkValidPassword(String testingPassword){
-        return testingPassword.equals(this.password);
+    public boolean checkValidPassword(String insertedPassword){
+        return insertedPassword.equals(this.password);
     }
 
     public String getLibraryNumber(){

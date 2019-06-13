@@ -1,15 +1,10 @@
-package com.twu.biblioteca.library;
-
-import com.twu.biblioteca.library.user.LibraryUser;
-import com.twu.biblioteca.library.user.UserException;
+package com.twu.biblioteca.library.user;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Test;
 
-/**
- * Los pequetes de pruebas guardan concordancia con todos los paquetes que fueron definidos en tu aplicación
- */
+
 public class LibraryUserTest {
     @Test(expected = UserException.class)
     public void shouldReturnExceptionWhenCreatingAUserWithAFormatWithoutHyphen() throws UserException{

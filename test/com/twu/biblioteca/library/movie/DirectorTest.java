@@ -1,6 +1,4 @@
-package com.twu.biblioteca.library;
-
-import com.twu.biblioteca.library.movie.Director;
+package com.twu.biblioteca.library.movie;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

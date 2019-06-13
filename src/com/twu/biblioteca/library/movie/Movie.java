@@ -1,6 +1,6 @@
 package com.twu.biblioteca.library.movie;
 
-import com.twu.biblioteca.library.rent.Item;
+import com.twu.biblioteca.library.item.Item;
 
 public class Movie implements Item {
     private String name;

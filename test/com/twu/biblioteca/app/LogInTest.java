@@ -32,12 +32,16 @@ public class LogInTest {
         logIn.addValidUser(thirdLibraryUser);
     }
 
-    @Test
-    public void shouldAskMeForUserNumberWhenCallingStartLogInInteraction() throws IOException, UserException {
+    private LogIn setUpOneLogInUserAndExit() throws IOException, UserException {
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("111-1111").thenReturn("password1").thenReturn("q");
         LogIn logIn = new LogIn(bufferedReader);
         addLogInUsers(logIn);
+        return logIn;
+    }
+    @Test
+    public void shouldAskMeForUserNumberWhenCallingStartLogInInteraction() throws IOException, UserException{
+        LogIn logIn = setUpOneLogInUserAndExit();
 
         logIn.startLogInInteraction();
 
@@ -45,25 +49,15 @@ public class LogInTest {
     }
 
     @Test
-    /**
-     * Esta prueba tiene el mismo setup y assert que la se arriba cómo pordrías refactorizarlo para eliminar el código duplicado
-     */
     public void shouldAskMeForPasswordAfterInsertingLibraryNumberWhenCallingStartLogInInteraction() throws IOException, UserException{
-        BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn("111-1111").thenReturn("password1").thenReturn("q");
-        LogIn logIn = new LogIn(bufferedReader);
-        addLogInUsers(logIn);
-
+        LogIn logIn = setUpOneLogInUserAndExit();
         logIn.startLogInInteraction();
 
         assertThat(this.byteArrayOutputStream.toString(), containsString(LogIn.insertPasswordMessage));
     }
 
     @Test
-    /**
-     * Por TheFunction es innecesario, se asume que llamas a una función
-     */
-    public void shouldCallTheFunction_readLine_whenCallingStartLogInInteraction() throws IOException, UserException{
+    public void shouldCallTwiceTheFunctionReadLinewhenCallingStartLogInInteraction() throws IOException, UserException{
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("111-1111").thenReturn("password1");
         LogIn logIn = new LogIn(bufferedReader);

@@ -1,35 +1,34 @@
 package com.twu.biblioteca.app;
 
 import com.twu.biblioteca.library.book.Book;
+import com.twu.biblioteca.library.item.RentalItem;
+import com.twu.biblioteca.library.item.RentalItemService;
 import com.twu.biblioteca.library.movie.Movie;
-import com.twu.biblioteca.library.rent.RentItem;
-import com.twu.biblioteca.library.rent.RentItemService;
 import com.twu.biblioteca.library.user.LibraryUser;
 import com.twu.biblioteca.library.user.UserException;
 
 /**
- * ¿Por qué estos métodos son protected?
  * Sería mejor separar responsabilidades por el tipo de objeto que se esta generando y crear clases específicas para los mismos
  */
 class DataBuilder {
-    static protected RentItemService generateBooksRentService(){
-        RentItemService rentItemService = new RentItemService("Biblioteca");
-        rentItemService.addItem(new RentItem(new Book("First Book", 1992, "First Writer")));
-        rentItemService.addItem(new RentItem(new Book("Second Book", 2019, "Second Writer")));
-        rentItemService.addItem(new RentItem(new Book("Third Book", 2010, "Third Writer")));
-        return rentItemService;
+    static public RentalItemService generateBooksRentService(){
+        RentalItemService rentalItemService = new RentalItemService("Biblioteca");
+        rentalItemService.addItem(new RentalItem(new Book("First Book", 1992, "First Writer")));
+        rentalItemService.addItem(new RentalItem(new Book("Second Book", 2019, "Second Writer")));
+        rentalItemService.addItem(new RentalItem(new Book("Third Book", 2010, "Third Writer")));
+        return rentalItemService;
     }
 
-    static protected RentItemService generateMoviesRentService(){
-        RentItemService rentItemService = new RentItemService("Movies");
+    static public RentalItemService generateMoviesRentService(){
+        RentalItemService rentalItemService = new RentalItemService("Movies");
         Movie movie = new Movie("I Robot", 2016, "Director", 5);
-        rentItemService.addItem(new RentItem(new Movie("First Movie", 2016, "Director", 5)));
-        rentItemService.addItem(new RentItem(new Movie("Second Movie", 2016, "Director", 5)));
-        rentItemService.addItem(new RentItem(new Movie("Third Movie", 2016, "Director", 5)));
-        return rentItemService;
+        rentalItemService.addItem(new RentalItem(new Movie("First Movie", 2016, "Director", 5)));
+        rentalItemService.addItem(new RentalItem(new Movie("Second Movie", 2016, "Director", 5)));
+        rentalItemService.addItem(new RentalItem(new Movie("Third Movie", 2016, "Director", 5)));
+        return rentalItemService;
     }
 
-    static protected LogIn generateLogIn() throws UserException {
+    static public LogIn generateLogIn() throws UserException {
 
         LogIn logIn= new LogIn(null);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "Juan", "juan@email.com", "094");

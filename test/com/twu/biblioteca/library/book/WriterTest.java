@@ -1,5 +1,4 @@
-package com.twu.biblioteca.library;
-import com.twu.biblioteca.library.book.Writer;
+package com.twu.biblioteca.library.book;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;

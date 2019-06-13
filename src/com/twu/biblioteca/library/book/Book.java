@@ -1,5 +1,5 @@
 package com.twu.biblioteca.library.book;
-import com.twu.biblioteca.library.rent.Item;
+import com.twu.biblioteca.library.item.Item;
 
 public class Book implements Item {
     private String name;

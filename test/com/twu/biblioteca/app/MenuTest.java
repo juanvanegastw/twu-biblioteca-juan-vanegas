@@ -1,20 +1,19 @@
 package com.twu.biblioteca.app;
 
 import com.twu.biblioteca.library.book.Book;
-import com.twu.biblioteca.library.rent.RentItem;
-import com.twu.biblioteca.library.rent.RentItemService;
-import com.twu.biblioteca.library.rent.RentItemException;
+import com.twu.biblioteca.library.item.RentalItem;
+import com.twu.biblioteca.library.item.RentalItemService;
+import com.twu.biblioteca.library.item.RentalItemException;
 import com.twu.biblioteca.library.user.LibraryUser;
 import com.twu.biblioteca.library.user.UserException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,16 +23,16 @@ import static org.mockito.Mockito.when;
 public class MenuTest {
 
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    private RentItemService rentItemService = new RentItemService("Biblioteca");
-    private RentItemService rentMovieService = DataBuilder.generateMoviesRentService();
-    private RentItem firstBook;
+    private RentalItemService rentalItemService = new RentalItemService("Biblioteca");
+    private RentalItemService rentMovieService = DataBuilder.generateMoviesRentService();
+    private RentalItem firstBook;
     private LibraryUser user;
     private Menu menu;
 
     @Before
     public void setUp() throws UserException{
         System.setOut(new PrintStream(this.byteArrayOutputStream));
-        this.firstBook = new RentItem(new Book("First Book", 1992, "First Writer"));
+        this.firstBook = new RentalItem(new Book("First Book", 1992, "First Writer"));
         this.user = new LibraryUser("111-1111", "password", "name", "email", "094");
     }
 
@@ -42,51 +41,27 @@ public class MenuTest {
         System.setOut(System.out);
     }
 
-    @Test
-    public void testWelcomeMessageNotNull(){
-        //Setting
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
-
-        //Executing
-        this.menu.showWelcomeMessage();
-
-        //Verifying
-        Assert.assertTrue(this.byteArrayOutputStream.toString().length() > 0);
-    }
 
     @Test
-    public void testWelcomeMessageCorrectMessage(){
-        //Setting
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
-
-        //Executing
-        this.menu.showWelcomeMessage();
-
-        //Verifying
-        assertThat(this.byteArrayOutputStream.toString(), is(Menu.welcomeMessage));
-    }
-
-    @Test
-    public void shouldShowTheGeneralMenu(){
+    public void shouldShowWelcomeMessageWhenStarting() throws IOException {
         // Arrange
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, null);
+        BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("q");
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String message = MenuMessages.welcomeMessage;
 
         // Act
-        this.menu.showGeneralMenu();
+        menu.startLibrary();
 
         // Verifying
-        assertThat(this.byteArrayOutputStream.toString(), containsString(Menu.generalMenu));
+        assertThat( this.byteArrayOutputStream.toString(), containsString(message));
     }
-
     @Test
-    /**
-     * Es mejor si especificas mejor que es 1 y usualment todos los nombres de pruebas son solo letras p.ej shouldShowTheBookListWhenSelectingOptionOne o shouldShowTheBookListWhenSelectingFirstOption
-     */
-    public void shouldShowTheBookListWhenSelecting1(){
+    public void shouldShowTheBookListWhenSelectingOptionOne(){
         // Arrange
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, null);
-        String totalMessage = String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, null);
+        String totalMessage = String.format(MenuServiceMessages.availableItemsMessage, "book") + this.rentalItemService.getItemList(true);
         Integer messageLinesNumber = totalMessage.split("\n").length;
 
         // Act
@@ -97,35 +72,32 @@ public class MenuTest {
     }
 
     @Test
-    /**
-     * El nombre de esta prueba está incompleto, qué estas seleccionando?
-     */
-    public void shouldShowLeavingMessageWhenSelecting(){
+    public void shouldShowLeavingMessageWhenSelectingTheLetterQ(){
         // Arrange
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,null);
+        this.menu = new Menu(this.rentalItemService, this.rentMovieService,null);
 
         // Act
         this.menu.executeUserSelectedOption("q");
 
         // Verifying
-        assertThat( this.byteArrayOutputStream.toString(), is(Menu.leavingMessage));
+        assertThat( this.byteArrayOutputStream.toString(), is(MenuMessages.leavingMessage));
     }
+
 
     @Test
     public void shouldShowBookListWhenInserting1onConsole() throws IOException {
         // Arrange
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "book") +
-                this.rentItemService.getItemList(true) + Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String message = String.format(MenuServiceMessages.availableItemsMessage, "book") + this.rentalItemService.getItemList(true);
 
         // Act
-        menu.startMenuServices();
+        menu.startLibrary();
 
         // Verifying
-        assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
+        assertThat( this.byteArrayOutputStream.toString(), containsString(message));
     }
 
     @Test
@@ -133,17 +105,16 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
-        Integer messageLinesNumber = totalMessage.split("\n").length;
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService, this.rentMovieService,bufferedReader);
+        String message = MenuMessages.leavingMessage;
 
         // Act
         when(bufferedReader.readLine()).thenReturn("q");
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
-        assertThat( byteArrayOutputStream.toString().split("\n").length, is(messageLinesNumber));
+        assertThat( byteArrayOutputStream.toString(), containsString(message));
     }
 
     @Test
@@ -151,15 +122,14 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("Another").thenReturn("q");
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String totalMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.invalidOptionMessage
-                + Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
+        this.menu = new Menu(this.rentalItemService, this.rentMovieService,bufferedReader);
+        String message = MenuMessages.invalidOptionMessage;
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
-        assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
+        assertThat( this.byteArrayOutputStream.toString(), containsString(message));
     }
 
     @Test
@@ -167,17 +137,15 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = org.mockito.Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1").thenReturn("q");
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
+        this.menu = new Menu(this.rentalItemService, this.rentMovieService,bufferedReader);
 
-        String firstMessage = Menu.generalMenu + Menu.selectOptionOption + String.format(MenuService.availableItemsMessage, "book") + this.rentItemService.getItemList(true);
-        String secondMessage = Menu.generalMenu + Menu.selectOptionOption + Menu.leavingMessage;
-        String totalMessage = firstMessage + secondMessage;
+        String message = String.format(MenuServiceMessages.availableItemsMessage, "book") + this.rentalItemService.getItemList(true);
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
-        assertThat( this.byteArrayOutputStream.toString(), is(totalMessage));
+        assertThat( this.byteArrayOutputStream.toString(), containsString(message));
     }
 
     /*
@@ -189,18 +157,15 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("x").thenReturn("q");
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String expected = String.format(MenuService.selectItemMessage, "book");
+        this.menu = new Menu(this.rentalItemService, this.rentMovieService,bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
+
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(this.byteArrayOutputStream.toString(), containsString(expected));
@@ -211,21 +176,18 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
+
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
-        assertThat(this.firstBook.getIsCheckOut(), is(true));
+        assertTrue(this.firstBook.getIsCheckOut());
 
     }
 
@@ -234,20 +196,16 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String expected = String.format(MenuService.selectItemMessage, "book")  + String.format(MenuService.checkoutSuccessfullyMessage, "book");
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemMessage, "book")  + String.format(MenuServiceMessages.checkoutSuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
@@ -258,20 +216,16 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("1").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String expected = String.format(MenuService.selectItemMessage, "book") + String.format(MenuService.checkoutUnsuccessfullyMessage, "book");
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemMessage, "book") + String.format(MenuServiceMessages.checkoutUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
@@ -282,20 +236,16 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("x").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String expected = String.format(MenuService.selectItemMessage, "book") + String.format(MenuService.checkoutUnsuccessfullyMessage, "book");
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemMessage, "book") + String.format(MenuServiceMessages.checkoutUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected ));
@@ -311,18 +261,15 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("111-1111").thenReturn("1").thenReturn("x").thenReturn("q");
-        this.menu = new Menu(this.rentItemService, this.rentMovieService,bufferedReader);
-        String expected = String.format(MenuService.selectItemToReturnMessage, "book");
+        this.menu = new Menu(this.rentalItemService, this.rentMovieService,bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemToReturnMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
+
         this.menu.setLogIn(logIn);
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
@@ -334,37 +281,32 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("4").thenReturn("0").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
-        assertThat(this.firstBook.getIsCheckOut(), is(false));
+        assertFalse(this.firstBook.getIsCheckOut());
     }
 
     @Test
-    public void shouldShowSuccessfulMessageWhenSelecting4AndThen0() throws IOException, RentItemException, UserException {
+    public void shouldShowSuccessfulMessageWhenSelecting4AndThen0() throws IOException, RentalItemException, UserException {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.rentItemService.checkOutItem(0, user);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String expected = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInSuccessfullyMessage, "book");
+        this.rentalItemService.addItem(this.firstBook);
+        this.rentalItemService.checkOutItem(0, user);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemToReturnMessage, "book") + String.format(MenuServiceMessages.checkInSuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
@@ -377,19 +319,16 @@ public class MenuTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("q");
 
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String expected = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemToReturnMessage, "book") + String.format(MenuServiceMessages.checkInUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
+
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
@@ -401,19 +340,16 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("4").thenReturn("111-1111").thenReturn("1").thenReturn("1").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
-        String expected = String.format(MenuService.selectItemToReturnMessage, "book") + String.format(MenuService.checkInUnsuccessfullyMessage, "book");
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
+        String expected = String.format(MenuServiceMessages.selectItemToReturnMessage, "book") + String.format(MenuServiceMessages.checkInUnsuccessfullyMessage, "book");
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
+
         // Act
-        this.menu.startMenuServices();
+        this.menu.startLibrary();
 
         // Verifying
         assertThat(byteArrayOutputStream.toString(), containsString(expected));
@@ -425,15 +361,11 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("111-1111").thenReturn("1").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
-        LibraryUser secondLibraryUser = new LibraryUser("222-2222", "password2", "name", "email", "094");
-        logIn.addValidUser(secondLibraryUser);
-        LibraryUser thirdLibraryUser = new LibraryUser("333-3333", "password3", "name", "email", "094");
-        logIn.addValidUser(thirdLibraryUser);
         this.menu.setLogIn(logIn);
 
 
@@ -441,7 +373,7 @@ public class MenuTest {
         this.menu.startLibrary();
 
         // Verifying
-        assertThat(byteArrayOutputStream.toString(), containsString(Menu.welcomeMessage));
+        assertThat(byteArrayOutputStream.toString(), containsString(MenuMessages.welcomeMessage));
 
     }
 
@@ -450,8 +382,8 @@ public class MenuTest {
         // Arrange
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when((bufferedReader.readLine())).thenReturn("3").thenReturn("111-1111").thenReturn("1").thenReturn("0").thenReturn("p").thenReturn("q");
-        this.rentItemService.addItem(this.firstBook);
-        this.menu = new Menu(this.rentItemService,this.rentMovieService, bufferedReader);
+        this.rentalItemService.addItem(this.firstBook);
+        this.menu = new Menu(this.rentalItemService,this.rentMovieService, bufferedReader);
         LogIn logIn= new LogIn(bufferedReader);
         LibraryUser firstLibraryUser = new LibraryUser("111-1111", "1", "name", "email", "094");
         logIn.addValidUser(firstLibraryUser);
@@ -462,7 +394,7 @@ public class MenuTest {
         this.menu.startLibrary();
 
         // Verifying
-        assertThat(byteArrayOutputStream.toString(), containsString(Menu.userInfoMessage));
+        assertThat(byteArrayOutputStream.toString(), containsString(MenuMessages.userInfoMessage));
 
     }
 
